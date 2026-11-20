@@ -1,53 +1,232 @@
-/* app/globals.css */
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #4a5568;
-  border-radius: 10px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #a78bfa;
-  border-radius: 10px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #8b5cf6;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
+/*
+  Tasarım tokenleri. Varsayılan karanlık; sistem açık tema isterse açık.
+  Tek vurgu rengi: mor (kimlik). Durum renkleri yalnız durum bildirir.
+*/
+:root {
+  color-scheme: dark;
+  --bg: oklch(0.17 0.018 295);
+  --surface: oklch(0.205 0.022 295);
+  --surface-2: oklch(0.245 0.026 295);
+  --surface-3: oklch(0.29 0.03 295);
+  --line: oklch(0.34 0.03 295);
+  --line-strong: oklch(0.45 0.035 295);
+  --fg: oklch(0.96 0.008 295);
+  --fg-muted: oklch(0.78 0.02 295);
+  --fg-subtle: oklch(0.68 0.025 295);
+  --accent: oklch(0.76 0.135 300);
+  --accent-strong: oklch(0.82 0.11 300);
+  --accent-fg: oklch(0.2 0.05 300);
+  --accent-soft: oklch(0.76 0.135 300 / 0.14);
+  --danger: oklch(0.77 0.13 25);
+  --danger-soft: oklch(0.77 0.13 25 / 0.12);
+  --ok: oklch(0.8 0.12 160);
+  --shadow: 0 1px 2px oklch(0.1 0.02 295 / 0.5), 0 8px 24px -12px oklch(0.1 0.02 295 / 0.7);
+  --ring: var(--accent);
 }
 
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.1; }
-  50% { opacity: 0.15; }
-}
-.animate-pulse-slow {
-  animation: pulse-slow 4s infinite ease-in-out;
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --bg: oklch(0.975 0.006 295);
+    --surface: oklch(0.995 0.002 295);
+    --surface-2: oklch(0.955 0.01 295);
+    --surface-3: oklch(0.92 0.014 295);
+    --line: oklch(0.88 0.014 295);
+    --line-strong: oklch(0.74 0.02 295);
+    --fg: oklch(0.21 0.03 295);
+    --fg-muted: oklch(0.43 0.03 295);
+    --fg-subtle: oklch(0.5 0.03 295);
+    --accent: oklch(0.49 0.18 300);
+    --accent-strong: oklch(0.42 0.18 300);
+    --accent-fg: oklch(0.99 0.005 300);
+    --accent-soft: oklch(0.49 0.18 300 / 0.09);
+    --danger: oklch(0.5 0.18 25);
+    --danger-soft: oklch(0.5 0.18 25 / 0.08);
+    --ok: oklch(0.47 0.12 160);
+    --shadow: 0 1px 2px oklch(0.3 0.03 295 / 0.08), 0 8px 24px -12px oklch(0.3 0.03 295 / 0.18);
+  }
 }
 
-@keyframes glowing-border {
-  0% { box-shadow: 0 0 5px rgba(167, 139, 250, 0.7), 0 0 15px rgba(99, 102, 241, 0.5); }
-  50% { box-shadow: 0 0 15px rgba(167, 139, 250, 0.9), 0 0 40px rgba(99, 102, 241, 0.7); }
-  100% { box-shadow: 0 0 5px rgba(167, 139, 250, 0.7), 0 0 15px rgba(99, 102, 241, 0.5); }
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-ok: var(--ok);
+
+  /* Tip ölçeği: 1.25 oranı, 16 px taban. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.5rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.6rem;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.75rem;
+  --text-question: clamp(1.625rem, 1.2rem + 1.6vw, 2.25rem);
+  --text-question--line-height: 1.2;
+  --text-display: clamp(2.5rem, 1.7rem + 3.6vw, 4rem);
+  --text-display--line-height: 1.02;
+
+  --shadow-card: var(--shadow);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
-.animate-glowing-border {
-  animation: glowing-border 3s infinite alternate ease-in-out;
+
+@layer base {
+  html {
+    background: var(--bg);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    min-height: 100dvh;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  input {
+    caret-color: var(--accent);
+  }
+  a {
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  button:not(:disabled),
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
+  * {
+    scrollbar-color: var(--line-strong) transparent;
+  }
+}
+
+/* İlerleme: 30 dilimli çubuk. Her dilim bir soru. */
+.progress {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 6px;
+  border: 0;
+  background: var(--surface-3);
+  color: var(--accent);
+  --seg: calc(100% / 30);
+  mask: repeating-linear-gradient(
+    to right,
+    #000 0 calc(var(--seg) - 3px),
+    transparent calc(var(--seg) - 3px) var(--seg)
+  );
+}
+.progress::-webkit-progress-bar {
+  background: var(--surface-3);
+}
+.progress::-webkit-progress-value {
+  background: var(--accent);
+  transition: inline-size 240ms var(--ease-out-expo);
+}
+.progress::-moz-progress-bar {
+  background: var(--accent);
+}
+
+/* Eminlik ölçeri. */
+.meter {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 4px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+.meter::-webkit-meter-bar {
+  background: var(--surface-3);
+  border: 0;
+  border-radius: 999px;
+  height: 4px;
+}
+.meter::-webkit-meter-optimum-value,
+.meter::-webkit-meter-suboptimum-value,
+.meter::-webkit-meter-even-less-good-value {
+  background: var(--accent);
+  border-radius: 999px;
+}
+.meter::-moz-meter-bar {
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+/* İskelet satırı: yükleme sırasında soru yerini tutar. */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2), var(--surface-3), var(--surface-2));
+  background-size: 200% 100%;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton {
+    animation: shimmer 1.4s linear infinite;
+  }
+  /* Yeni soru: kısa giriş. */
+  .enter {
+    animation: enter 220ms var(--ease-out-expo) both;
+  }
+  /* Tahmin anı: tek seferlik açılış. */
+  .reveal {
+    animation: reveal 520ms var(--ease-out-expo) both;
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+    filter: blur(6px);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    filter: blur(0);
+  }
 }

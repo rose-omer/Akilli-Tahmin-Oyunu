@@ -1,30 +1,105 @@
-// prisma/schema.prisma
+// Prisma 7: bağlantı adresi prisma.config.ts içinde; istemci Neon adapter'ı ile kurulur (lib/prisma.ts).
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+}
+
+enum GameMode {
+  tree
+  engine
+}
+
+enum GuessSource {
+  tree
+  model
+  gemini
+}
+
+enum Answer {
+  evet
+  hayir
+  bilmiyorum
+}
+
+enum QuestionSource {
+  tree
+  gemini
 }
 
 model Game {
   id                  String         @id @default(uuid())
-  playedAt            DateTime       @default(now())
+  playedAt            DateTime       @default(now()) @db.Timestamptz(3)
+  mode                GameMode
   prediction          String
-  isPredictionCorrect Boolean?       // Tahminin doğru olup olmadığını belirtir (true/false, null olabilir)
-  userCorrectAnswer   String?        // Eğer tahmin yanlışsa, kullanıcının aklındaki doğru cevap (isteğe bağlı)
-  gameQuestions       GameQuestion[] // Her oyunun soru-cevaplarını tutacak ilişki
+  source              GuessSource
+  isPredictionCorrect Boolean
+  userCorrectAnswer   String?
+  entityId            String?
+  entity              Entity?        @relation(fields: [entityId], references: [id], onDelete: SetNull)
+  gameQuestions       GameQuestion[]
+
+  @@index([playedAt])
+  @@index([entityId])
 }
 
 model GameQuestion {
-  id            String   @id @default(uuid())
-  gameId        String   // Hangi oyuna ait olduğunu belirtir
-  game          Game     @relation(fields: [gameId], references: [id])
-  question      String   // Sorulan soru metni
-  answer        String   // Kullanıcının verdiği cevap (evet/hayır/biraz)
-  questionIndex Int      // Hangi sıradaki soru olduğu
+  id            String @id @default(uuid())
+  gameId        String
+  game          Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  questionId    String
+  question      String
+  answer        Answer
+  questionIndex Int
 
-  @@unique([gameId, questionIndex]) // Bir oyunda aynı soru sırasının tekrarlanmamasını sağlar
+  // (gameId, questionIndex) benzersiz indeksi gameId ile başlar; gameId aramaları ve FK için yeterli.
+  @@unique([gameId, questionIndex])
+}
+
+model Entity {
+  id             String            @id @default(uuid())
+  name           String
+  nameNormalized String            @unique
+  createdAt      DateTime          @default(now()) @db.Timestamptz(3)
+  stats          EntityAnswerStat[]
+  games          Game[]
+}
+
+model Question {
+  id        String             @id
+  text      String
+  source    QuestionSource
+  // Gemini'nin önerdiği soru yönetici onayı olmadan havuza girmez.
+  approved  Boolean            @default(false)
+  createdAt DateTime           @default(now()) @db.Timestamptz(3)
+  stats     EntityAnswerStat[]
+
+  @@index([approved])
+}
+
+model EntityAnswerStat {
+  entityId   String
+  questionId String
+  entity     Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  yes        Int      @default(0)
+  no         Int      @default(0)
+  unknown    Int      @default(0)
+
+  @@id([entityId, questionId])
+  @@index([questionId])
+}
+
+// Sabit pencereli hız sınırı. Ham IP saklanmaz; yalnız SHA-256 özeti.
+model RateLimit {
+  ipHash      String
+  windowStart DateTime @db.Timestamptz(3)
+  count       Int      @default(1)
+
+  @@id([ipHash, windowStart])
+  @@index([windowStart])
 }
