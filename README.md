@@ -7,6 +7,21 @@ Bu proje, EMAR Proje şirketindeki stajım sırasında, Staj Sorumlum Sayın **M
 
 Aklından bir şey tut; oyun en çok 30 evet/hayır sorusunda bulmaya çalışır. Her oyundan öğrenir: kaydedilen cevaplar bir sonraki oyunun soru seçimini ve tahminini değiştirir.
 
+## Ekran görüntüleri
+
+Görüntüler yerel bellekte tutulan soru ağacıyla alındı; veritabanı bağlı değil.
+
+| | |
+|---|---|
+| ![Başlangıç](docs/ekran/1-giris.png)<br>Başlangıç | ![Soru ekranı](docs/ekran/2-sorgu.png)<br>Soru ekranı |
+| ![Tahmin](docs/ekran/3-tahmin.png)<br>Tahmin | ![İstatistikler](docs/ekran/4-istatistikler.png)<br>İstatistikler |
+
+## Kullanım
+
+![Kullanım akışı](docs/ekran/kullanim.gif)
+
+Oyuncu aklında bir şey tutar ve soruları evet, hayır ya da bilmiyorum diye cevaplar. Oyun en çok 30 soruda tahmin eder.
+
 ## Özellikler
 
 - Evet / Hayır / Bilmiyorum cevapları; klavye kısayolları (E, H, B; G geri al).
