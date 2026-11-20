@@ -30,7 +30,7 @@ export const DEFAULT_ENGINE_OPTIONS: EngineOptions = {
 export type Ranked = { name: string; key: string; p: number }[];
 
 export type Decision =
-  | { kind: "question"; id: string; gain: number }
+  | { kind: "question"; id: string; gain: number; ranked: Ranked }
   | { kind: "guess"; ranked: Ranked; reason: "confident" | "exhausted" };
 
 /**
@@ -53,5 +53,5 @@ export function decide(
   const asked = new Set(steps.map((s) => s.q));
   const best = bestQuestion(knowledge, p, pool, asked);
   if (!best || best.gain < options.minGain) return { kind: "guess", ranked, reason: "exhausted" };
-  return { kind: "question", id: best.id, gain: best.gain };
+  return { kind: "question", id: best.id, gain: best.gain, ranked };
 }

@@ -10,7 +10,7 @@ const textOf = (id: string) => {
 const aslan = guessPaths(tree).find((p) => p.name === "Aslan")!;
 const answers = new Map(aslan.path.map((s) => [textOf(s.q), s.a]));
 
-const question = (page: Page) => page.locator("h2#soru");
+const question = (page: Page) => page.locator("h1#soru");
 // playwright.config.ts sunucuya aynı değeri verir; yalnız test sunucusu içindir.
 const ADMIN_TOKEN = "e2e-yonetim-parolasi";
 
@@ -26,6 +26,7 @@ async function playToAslan(page: Page) {
   await page.goto("/");
   await page.getByRole("button", { name: "Oyuna başla" }).click();
   await expect(question(page)).toHaveText(textOf(tree.root));
+  await expect(page.getByRole("heading", { level: 2, name: "Şüpheliler" })).toBeVisible();
   for (let i = 0; i < aslan.path.length; i++) {
     await expect(page.getByText(`Soru ${i + 1} / 30`)).toBeVisible();
     await expect(page.getByText("Düşünüyorum…")).toBeHidden();

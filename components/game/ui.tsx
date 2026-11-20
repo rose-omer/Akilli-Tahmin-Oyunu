@@ -1,30 +1,40 @@
-import type { ButtonHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes, CSSProperties } from "react";
 
-type Variant = "primary" | "secondary" | "ghost";
-
-const base =
-  "inline-flex min-h-12 select-none items-center justify-center gap-2 rounded-lg px-5 text-base font-medium " +
-  "transition-[background-color,border-color,color,transform] duration-150 ease-out active:translate-y-px " +
-  "aria-disabled:cursor-not-allowed aria-disabled:opacity-55 aria-disabled:active:translate-y-0 " +
-  "disabled:cursor-not-allowed disabled:opacity-55";
+/**
+ * primary: dolu mühür · secondary: çerçeve mühür · dashed: kesik çizgili mühür (kâğıt üstünde)
+ * ghost: altı çizili metin · quiet: oda üstünde ince çerçeveli düğme
+ */
+type Variant = "primary" | "secondary" | "dashed" | "ghost" | "quiet";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-accent text-accent-fg hover:bg-accent-strong aria-disabled:hover:bg-accent",
-  secondary:
-    "border border-line bg-surface-2 text-fg hover:border-line-strong hover:bg-surface-3 aria-disabled:hover:bg-surface-2",
-  ghost: "text-fg-muted hover:bg-surface-2 hover:text-fg aria-disabled:hover:bg-transparent",
+  primary: "stamp stamp-solid",
+  secondary: "stamp stamp-outline",
+  dashed: "stamp stamp-dashed",
+  ghost: "btn-ghost",
+  quiet: "btn-quiet",
 };
+
+/** Mühür boyu (yalnız mühür türlerinde): md taban, lg ekran eylemi, xl açılış eylemi. */
+type Size = "md" | "lg" | "xl";
+
+const sizes: Record<Size, string> = { md: "", lg: "stamp-lg", xl: "stamp-xl" };
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: Variant;
+  size?: Size;
+  /** Mühür eğimi, derece. */
+  tilt?: number;
   /** Odak kaybolmasın diye `disabled` yerine `aria-disabled`; tıklama yine engellenir. */
   busy?: boolean;
 };
 
 export function Button({
   variant = "secondary",
+  size = "md",
+  tilt,
   busy,
   className = "",
+  style,
   onClick,
   type,
   ...rest
@@ -40,7 +50,8 @@ export function Button({
         }
         onClick?.(e);
       }}
-      className={`${base} ${variants[variant]} ${className}`}
+      className={`${variants[variant]} ${sizes[size]} ${className}`}
+      style={tilt === undefined ? style : ({ ...style, "--tilt": `${tilt}deg` } as CSSProperties)}
       {...rest}
     />
   );
@@ -48,11 +59,49 @@ export function Button({
 
 export function Kbd({ children }: { children: string }) {
   return (
-    <kbd
-      aria-hidden="true"
-      className="hidden min-w-6 rounded border border-line px-1.5 text-center font-sans text-xs leading-5 font-medium text-fg-subtle sm:inline-block"
-    >
+    <kbd aria-hidden="true" className="kbd hidden sm:inline-block">
       {children}
     </kbd>
+  );
+}
+
+/** Sayaç çentikleri: her soru bir çizgi, beşte bir çapraz. */
+export function Tally({ count, label }: { count: number; label: string }) {
+  const groups = Math.floor(count / 5);
+  const rest = count % 5;
+  const step = 7;
+  const groupWidth = 4 * step + 10;
+  const width = Math.max(groups * groupWidth + rest * step, 1);
+  return (
+    <svg
+      role="img"
+      aria-label={label}
+      width={width}
+      height="28"
+      viewBox={`0 0 ${width} 28`}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      className="max-w-full shrink-0"
+    >
+      {Array.from({ length: groups }, (_, g) => {
+        const x = g * groupWidth + 3;
+        return (
+          <path
+            key={g}
+            d={`M${x} 4v20M${x + step} 4v20M${x + 2 * step} 4v20M${x + 3 * step} 4v20M${x - 3} 21L${x + 3 * step + 4} 7`}
+          />
+        );
+      })}
+      {rest > 0 && (
+        <path
+          d={Array.from(
+            { length: rest },
+            (_, i) => `M${groups * groupWidth + 3 + i * step} 4v20`,
+          ).join("")}
+        />
+      )}
+    </svg>
   );
 }

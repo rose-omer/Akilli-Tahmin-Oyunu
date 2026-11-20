@@ -55,6 +55,10 @@ describe("nextStep", () => {
     const { service } = setup();
     const r = data(await service.nextStep({ steps: [] }, "ip"));
     expect(r).toMatchObject({ kind: "question", mode: "tree", questionId: tree.root });
+    if (r.kind === "question") {
+      expect(r.candidates.length).toBeGreaterThan(0);
+      expect(r.candidates.length).toBeLessThanOrEqual(4);
+    }
   });
 
   it("yapraktaki 'evet' yolu ağacın tahminiyle biter (Gemini çağrılmaz)", async () => {
@@ -73,7 +77,10 @@ describe("nextStep", () => {
       await service.nextStep({ mode: "tree", steps: [{ q: tree.root, a: "bilmiyorum" }] }, "ip"),
     );
     expect(r.kind).toBe("question");
-    if (r.kind === "question") expect(r.questionId).not.toBe(tree.root);
+    if (r.kind === "question") {
+      expect(r.questionId).not.toBe(tree.root);
+      expect(r.candidates.length).toBeLessThanOrEqual(4);
+    }
   });
 
   it("her zaman 30 soru içinde bir tahminle biter", async () => {

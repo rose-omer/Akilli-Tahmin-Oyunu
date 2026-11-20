@@ -11,8 +11,8 @@ const LINKS = [
 export function SiteNav() {
   const pathname = usePathname();
   return (
-    <nav aria-label="Ana menü">
-      <ul className="flex gap-1 text-sm">
+    <nav aria-label="Ana menü" className="-mx-3.5 sm:ml-0">
+      <ul className="flex gap-1">
         {LINKS.map((link) => {
           const current = pathname === link.href;
           return (
@@ -20,8 +20,8 @@ export function SiteNav() {
               <Link
                 href={link.href}
                 aria-current={current ? "page" : undefined}
-                className={`inline-flex min-h-11 items-center rounded-md px-3 no-underline transition-colors duration-150 hover:bg-surface-2 hover:text-fg ${
-                  current ? "text-fg" : "text-fg-muted"
+                className={`inline-flex min-h-11 items-center px-3.5 ${
+                  current ? "underline" : "no-underline hover:underline"
                 }`}
               >
                 {link.label}

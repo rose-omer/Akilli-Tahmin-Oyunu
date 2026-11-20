@@ -1,4 +1,5 @@
 import type { RefObject } from "react";
+import { Folder } from "@/components/Folder";
 import type { GameError } from "./state";
 import { Button } from "./ui";
 
@@ -37,56 +38,55 @@ export function ErrorCard({
   const copy = COPY[error.kind];
   const canRetry = error.kind !== "invalid";
   return (
-    <section
-      role="alert"
-      aria-labelledby="hata-baslik"
-      className="enter my-auto rounded-xl border border-line bg-surface p-6 shadow-card sm:p-8"
-    >
-      <div className="flex items-start gap-3">
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 20 20"
-          className="mt-1 size-5 shrink-0 text-danger"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        >
-          <circle cx="10" cy="10" r="7.5" />
-          <path d="M10 6v4.5M10 13.6v.1" />
-        </svg>
-        <div>
-          <h2
-            id="hata-baslik"
-            ref={headingRef}
-            tabIndex={-1}
-            className="text-lg font-semibold tracking-[-0.01em] outline-none"
+    <section role="alert" aria-labelledby="hata-baslik" className="enter">
+      <Folder tab="Sorgu kesildi">
+        <div className="flex items-start gap-3.5">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            className="mt-1.5 size-7 shrink-0 text-stamp"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
           >
-            {copy.title}
-          </h2>
-          <p className="mt-1.5 max-w-[52ch] text-fg-muted">{copy.body}</p>
-          {error.requestId && (
-            <p className="mt-3 text-xs text-fg-subtle">
-              Hata kodu: <span className="tabular-nums">{error.requestId}</span>
-            </p>
+            <path d="M12 3l10 18H2z" strokeLinejoin="round" />
+            <path d="M12 10v5M12 18v.1" />
+          </svg>
+          <div className="min-w-0">
+            <h1
+              id="hata-baslik"
+              ref={headingRef}
+              tabIndex={-1}
+              className="text-question font-bold tracking-[-0.01em] outline-none"
+            >
+              {copy.title}
+            </h1>
+            <p className="mt-3 max-w-[52ch] text-fg-muted">{copy.body}</p>
+            {error.requestId && (
+              <p className="mt-3 text-sm text-fg-subtle">
+                Hata kodu: <span className="font-bold tabular-nums">{error.requestId}</span>
+              </p>
+            )}
+          </div>
+        </div>
+        <hr className="rule-dashed my-7" />
+        <div className="flex flex-wrap items-center gap-3.5">
+          {canRetry && (
+            <Button variant="primary" size="lg" tilt={-1} onClick={onRetry}>
+              Tekrar dene
+            </Button>
+          )}
+          <Button variant={canRetry ? "secondary" : "primary"} size="lg" tilt={1} onClick={onReset}>
+            Yeni oyun
+          </Button>
+          {onUndo && (
+            <Button variant="ghost" onClick={onUndo}>
+              Son cevabı geri al
+            </Button>
           )}
         </div>
-      </div>
-      <div className="mt-6 flex flex-wrap gap-3">
-        {canRetry && (
-          <Button variant="primary" onClick={onRetry}>
-            Tekrar dene
-          </Button>
-        )}
-        <Button variant={canRetry ? "secondary" : "primary"} onClick={onReset}>
-          Yeni oyun
-        </Button>
-        {onUndo && (
-          <Button variant="ghost" onClick={onUndo}>
-            Son cevabı geri al
-          </Button>
-        )}
-      </div>
+      </Folder>
     </section>
   );
 }

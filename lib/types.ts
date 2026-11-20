@@ -17,6 +17,8 @@ export type QuestionStep = {
   mode: Mode;
   questionId: string;
   text: string;
+  /** Şu ana kadarki cevaplara en çok uyan adaylar (en çok 4); "Şüpheliler" paneli. */
+  candidates: string[];
 };
 
 export type GuessStep = {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Folder, SideHeading } from "@/components/Folder";
 import { getStore } from "@/lib/game/runtime";
 import type { Statistics } from "@/lib/store/types";
 import type { GuessSource } from "@/lib/types";
@@ -29,29 +30,46 @@ export default async function StatisticsPage() {
   } catch (error) {
     console.error("[istatistik] yüklenemedi:", error);
   }
+  const filled = stats !== null && stats.totalGames > 0;
 
   return (
-    <div className="py-8 sm:py-12">
-      <h1 className="text-question font-semibold tracking-[-0.02em]">İstatistikler</h1>
-      <p className="mt-3 max-w-[56ch] text-fg-muted">
-        Her oyun kaydedilir ve motorun sayaçlarını besler. Bu sayfa motorun ne kadar iyi tahmin
-        ettiğini ve bilgiyi nereden aldığını gösterir.
-      </p>
-      {!store.persistent && (
-        <p className="mt-4 max-w-[56ch] rounded-lg border border-line bg-surface px-4 py-3 text-sm text-fg-muted">
-          Veritabanı bağlı değil. Sayılar yalnız bu sunucu açıkken bellekte tutulur.
+    <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
+      <Folder tab="Sicil">
+        <h1 className="text-question font-bold tracking-[-0.01em]">İstatistikler</h1>
+        <p className="mt-3 max-w-[56ch] text-fg-muted">
+          Her oyun kaydedilir ve motorun sayaçlarını besler. Bu sayfa motorun ne kadar iyi tahmin
+          ettiğini ve bilgiyi nereden aldığını gösterir.
         </p>
-      )}
+        <hr className="rule-dashed mt-6 mb-7" />
+        {stats === null ? (
+          <Empty
+            title="İstatistikler yüklenemedi"
+            body="Veritabanına şu an ulaşılamıyor. Biraz sonra sayfayı yenile."
+          />
+        ) : stats.totalGames === 0 ? (
+          <Empty
+            title="Henüz oyun yok"
+            body="İlk oyunu sen oyna; sonuçlar burada görünür."
+            action
+          />
+        ) : (
+          <Ledger stats={stats} />
+        )}
+      </Folder>
 
-      {stats === null ? (
-        <Empty
-          title="İstatistikler yüklenemedi"
-          body="Veritabanına şu an ulaşılamıyor. Biraz sonra sayfayı yenile."
-        />
-      ) : stats.totalGames === 0 ? (
-        <Empty title="Henüz oyun yok" body="İlk oyunu sen oyna; sonuçlar burada görünür." action />
-      ) : (
-        <Filled stats={stats} />
+      {(!store.persistent || filled) && (
+        <aside aria-label="Ayrıntılar" className="grid min-w-0 gap-8">
+          {!store.persistent && (
+            <section aria-labelledby="kayit-notu">
+              <SideHeading id="kayit-notu" title="Kayıt notu" />
+              <p className="mt-2 border-y border-line py-3 text-sm">
+                Veritabanı bağlı değil. Sayılar yalnız bu sunucu açıkken bellekte tutulur.
+              </p>
+            </section>
+          )}
+          {filled && <Sources stats={stats!} />}
+          {filled && <TopEntities stats={stats!} />}
+        </aside>
       )}
     </div>
   );
@@ -59,16 +77,13 @@ export default async function StatisticsPage() {
 
 function Empty({ title, body, action }: { title: string; body: string; action?: boolean }) {
   return (
-    <section aria-labelledby="bos" className="mt-12 border-t border-line pt-8">
-      <h2 id="bos" className="text-lg font-semibold">
+    <section aria-labelledby="bos">
+      <h2 id="bos" className="text-lg font-bold">
         {title}
       </h2>
       <p className="mt-1.5 text-fg-muted">{body}</p>
       {action && (
-        <Link
-          href="/"
-          className="mt-6 inline-flex min-h-12 items-center rounded-lg bg-accent px-7 font-medium text-accent-fg no-underline transition-colors duration-150 hover:bg-accent-strong"
-        >
+        <Link href="/" className="stamp stamp-solid stamp-lg mt-7 [--tilt:-1.5deg]">
           Oyuna başla
         </Link>
       )}
@@ -76,18 +91,7 @@ function Empty({ title, body, action }: { title: string; body: string; action?: 
   );
 }
 
-function Bar({ value }: { value: number }) {
-  return (
-    <span
-      aria-hidden="true"
-      className="block h-1.5 w-full overflow-hidden rounded-full bg-surface-3"
-    >
-      <span className="block h-full rounded-full bg-accent" style={{ width: `${value}%` }} />
-    </span>
-  );
-}
-
-function Filled({ stats }: { stats: Statistics }) {
+function Ledger({ stats }: { stats: Statistics }) {
   const summary = [
     { label: "Oynanan oyun", value: numberFormat.format(stats.totalGames) },
     { label: "Doğru tahmin", value: `%${pct(stats.correctGames, stats.totalGames)}` },
@@ -96,36 +100,37 @@ function Filled({ stats }: { stats: Statistics }) {
   ];
 
   return (
-    <div className="mt-10 grid gap-12">
-      <dl className="grid grid-cols-2 gap-x-6 gap-y-6 border-y border-line py-6 sm:grid-cols-4">
+    <div className="grid gap-10">
+      <dl className="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
         {summary.map((s) => (
-          <div key={s.label}>
+          <div
+            key={s.label}
+            className="flex flex-col justify-between border-l border-dashed border-line-strong pl-3.5"
+          >
             <dt className="text-sm text-fg-muted">{s.label}</dt>
-            <dd className="mt-1 text-2xl font-semibold tracking-[-0.02em] tabular-nums">
-              {s.value}
-            </dd>
+            <dd className="mt-1 text-[1.75rem] leading-tight font-bold tabular-nums">{s.value}</dd>
           </div>
         ))}
       </dl>
 
       <section aria-labelledby="haftalik">
-        <h2 id="haftalik" className="text-lg font-semibold">
+        <h2 id="haftalik" className="text-lg font-bold">
           Haftalık başarı
         </h2>
         <p className="mt-1 text-sm text-fg-muted">Son 12 hafta; hafta pazartesi başlar.</p>
         <table className="mt-4 w-full text-sm">
           <thead className="text-left text-fg-muted">
-            <tr className="border-b border-line">
-              <th scope="col" className="py-2 font-medium">
+            <tr className="border-b border-fg">
+              <th scope="col" className="py-2 font-normal">
                 Hafta
               </th>
-              <th scope="col" className="py-2 text-right font-medium">
+              <th scope="col" className="py-2 text-right font-normal">
                 Oyun
               </th>
-              <th scope="col" className="py-2 text-right font-medium">
+              <th scope="col" className="py-2 text-right font-normal">
                 Doğru
               </th>
-              <th scope="col" className="w-2/5 py-2 pl-6 font-medium">
+              <th scope="col" className="py-2 pl-5 text-right font-normal sm:w-2/5 sm:text-left">
                 Oran
               </th>
             </tr>
@@ -134,16 +139,18 @@ function Filled({ stats }: { stats: Statistics }) {
             {stats.weekly.map((w) => {
               const rate = pct(w.correct, w.total);
               return (
-                <tr key={w.weekStart} className="border-b border-line">
+                <tr key={w.weekStart} className="border-b border-dashed border-line-strong">
                   <th scope="row" className="py-2.5 text-left font-normal">
                     {weekFormat.format(new Date(w.weekStart))}
                   </th>
                   <td className="py-2.5 text-right">{w.total}</td>
                   <td className="py-2.5 text-right">{w.correct}</td>
-                  <td className="py-2.5 pl-6">
-                    <span className="flex items-center gap-3">
-                      <Bar value={rate} />
-                      <span className="w-10 shrink-0 text-right">%{rate}</span>
+                  <td className="py-2.5 pl-5">
+                    <span className="flex items-center justify-end gap-3 sm:justify-start">
+                      <span aria-hidden="true" className="ink-bar hidden sm:block">
+                        <span style={{ width: `${rate}%` }} />
+                      </span>
+                      <span className="w-10 shrink-0 text-right font-bold">%{rate}</span>
                     </span>
                   </td>
                 </tr>
@@ -152,50 +159,59 @@ function Filled({ stats }: { stats: Statistics }) {
           </tbody>
         </table>
       </section>
-
-      <div className="grid gap-12 sm:grid-cols-2">
-        <section aria-labelledby="kaynak">
-          <h2 id="kaynak" className="text-lg font-semibold">
-            Tahmini kim yaptı?
-          </h2>
-          <ul className="mt-4 grid gap-4">
-            {stats.bySource.map((s) => (
-              <li key={s.source}>
-                <div className="flex items-baseline justify-between text-sm">
-                  <span>{SOURCE_LABEL[s.source]}</span>
-                  <span className="text-fg-muted tabular-nums">
-                    {s.total} oyun, %{pct(s.correct, s.total)} doğru
-                  </span>
-                </div>
-                <div className="mt-2">
-                  <Bar value={pct(s.total, stats.totalGames)} />
-                </div>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-3 text-xs text-fg-subtle">
-            Çubuk: oyunların yüzde kaçında bu kaynak tahmin etti.
-          </p>
-        </section>
-
-        <section aria-labelledby="bilinenler">
-          <h2 id="bilinenler" className="text-lg font-semibold">
-            En çok bilinenler
-          </h2>
-          {stats.topEntities.length === 0 ? (
-            <p className="mt-4 text-sm text-fg-muted">Henüz doğru tahmin yok.</p>
-          ) : (
-            <ol className="mt-4 divide-y divide-line border-y border-line text-sm">
-              {stats.topEntities.map((e) => (
-                <li key={e.name} className="flex justify-between py-2.5">
-                  <span>{e.name}</span>
-                  <span className="text-fg-muted tabular-nums">{e.correct} kez</span>
-                </li>
-              ))}
-            </ol>
-          )}
-        </section>
-      </div>
     </div>
+  );
+}
+
+function Sources({ stats }: { stats: Statistics }) {
+  return (
+    <section aria-labelledby="kaynak">
+      <SideHeading
+        id="kaynak"
+        title="Tahmini kim yaptı?"
+        note="Çubuk: oyunların yüzde kaçında bu kaynak tahmin etti."
+      />
+      <ul className="mt-3.5 border-t border-line">
+        {stats.bySource.map((s) => (
+          <li key={s.source} className="border-b border-line py-3">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-3 text-sm">
+              <span className="text-fg-strong">{SOURCE_LABEL[s.source]}</span>
+              <span className="text-fg-muted tabular-nums">
+                {s.total} oyun, %{pct(s.correct, s.total)} doğru
+              </span>
+            </div>
+            <span aria-hidden="true" className="room-bar mt-2">
+              <span style={{ width: `${pct(s.total, stats.totalGames)}%` }} />
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function TopEntities({ stats }: { stats: Statistics }) {
+  return (
+    <section aria-labelledby="bilinenler">
+      <SideHeading id="bilinenler" title="En çok bilinenler" note="Doğru tahmin sayısına göre." />
+      {stats.topEntities.length === 0 ? (
+        <p className="mt-3.5 border-y border-line py-3 text-sm text-fg-muted">
+          Henüz doğru tahmin yok.
+        </p>
+      ) : (
+        <ol className="mt-3.5 border-t border-line">
+          {stats.topEntities.map((e, i) => (
+            <li
+              key={e.name}
+              className="grid grid-cols-[28px_minmax(0,1fr)_auto] items-baseline gap-3 border-b border-line py-2.5 text-sm"
+            >
+              <span className="text-fg-muted tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+              <span className="text-fg-strong">{e.name}</span>
+              <span className="verdict text-mark">{e.correct} kez</span>
+            </li>
+          ))}
+        </ol>
+      )}
+    </section>
   );
 }

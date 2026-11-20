@@ -1,6 +1,14 @@
 import type { ActionError, Answer, GuessStep, Mode, NextStepResult } from "@/lib/types";
 
-export type HistoryItem = { questionId: string; text: string; answer: Answer };
+/** `candidates`: soru sorulduğu andaki şüpheliler; geri alınca yeniden gösterilir. */
+export type HistoryItem = {
+  questionId: string;
+  text: string;
+  candidates: string[];
+  answer: Answer;
+};
+
+type Question = { id: string; text: string; candidates: string[] };
 
 export type Phase = "start" | "question" | "guess" | "wrong" | "done";
 
@@ -17,7 +25,7 @@ export type State = {
   phase: Phase;
   mode?: Mode;
   history: HistoryItem[];
-  question: { id: string; text: string } | null;
+  question: Question | null;
   guess: GuessStep | null;
   gameId: string | null;
   outcome: Outcome | null;
@@ -57,6 +65,7 @@ export function reducer(state: State, action: Action): State {
       const item = {
         questionId: state.question.id,
         text: state.question.text,
+        candidates: state.question.candidates,
         answer: action.answer,
       };
       return { ...state, history: [...state.history, item], pending: "next", error: null };
@@ -70,7 +79,7 @@ export function reducer(state: State, action: Action): State {
           ...state,
           mode: r.mode,
           phase: "question",
-          question: { id: r.questionId, text: r.text },
+          question: { id: r.questionId, text: r.text, candidates: r.candidates },
           guess: null,
           pending: null,
         };
@@ -84,7 +93,7 @@ export function reducer(state: State, action: Action): State {
         ...state,
         phase: "question",
         history: state.history.slice(0, -1),
-        question: { id: last.questionId, text: last.text },
+        question: { id: last.questionId, text: last.text, candidates: last.candidates },
         guess: null,
         error: null,
       };

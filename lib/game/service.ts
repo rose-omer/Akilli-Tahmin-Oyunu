@@ -32,6 +32,9 @@ import {
   type Step,
 } from "@/lib/types";
 
+/** Soru aşamasında "Şüpheliler" panelinde gösterilen aday sayısı. */
+const SUSPECT_COUNT = 4;
+
 /** Motorun en iyi adayı bu olasılığın altındaysa ve Gemini varsa son söz Gemini'nin. */
 export const WEAK_CANDIDATE = 0.35;
 const LEARNED_CACHE_MS = 30_000;
@@ -195,7 +198,18 @@ export function createGameService(deps: ServiceDeps) {
     const { walk, canonicalSteps } = resolve(m, mode, steps);
 
     if (walk?.status === "question" && steps.length < MAX_QUESTIONS) {
-      return { kind: "question", mode, questionId: walk.node.id, text: walk.node.text };
+      const ranked = topCandidates(
+        m.knowledge,
+        posterior(m.knowledge, canonicalSteps),
+        SUSPECT_COUNT,
+      );
+      return {
+        kind: "question",
+        mode,
+        questionId: walk.node.id,
+        text: walk.node.text,
+        candidates: ranked.map((r) => r.name),
+      };
     }
     if (walk?.status === "guess") {
       // Ağaç yaprağı tahmin eder; alternatifleri motorun sıralaması verir.
@@ -221,6 +235,7 @@ export function createGameService(deps: ServiceDeps) {
         mode,
         questionId: decision.id,
         text: questionText(m, decision.id),
+        candidates: decision.ranked.slice(0, SUSPECT_COUNT).map((r) => r.name),
       };
     }
     return finalGuess(m, mode, canonicalSteps, decision.ranked, decision.reason, requestId);

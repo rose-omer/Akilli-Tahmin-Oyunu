@@ -4,7 +4,16 @@ import { useEffect, useReducer, useRef } from "react";
 import { nextStep, submitAnswer, submitFeedback } from "@/app/actions";
 import type { ActionResult, Answer } from "@/lib/types";
 import { ErrorCard } from "./ErrorCard";
-import { DoneScreen, GuessScreen, QuestionScreen, StartScreen, WrongScreen } from "./screens";
+import {
+  AnswerLog,
+  DoneScreen,
+  GuessScreen,
+  HowItLearns,
+  QuestionScreen,
+  StartScreen,
+  Suspects,
+  WrongScreen,
+} from "./screens";
 import { initialState, reducer, type Retry, type State } from "./state";
 
 const stepsOf = (s: State) => s.history.map((h) => ({ q: h.questionId, a: h.answer }));
@@ -115,44 +124,73 @@ export function Game() {
     return () => window.removeEventListener("keydown", listener);
   }, []);
 
-  if (state.error) {
-    return (
-      <ErrorCard
-        error={state.error}
-        headingRef={headingRef}
-        onRetry={() => void run(state.error!.retry, state)}
-        onReset={() => dispatch({ type: "reset" })}
-        onUndo={state.error.retry.type === "next" && state.history.length > 0 ? undo : undefined}
-      />
-    );
-  }
+  return (
+    <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
+      {renderScreen()}
+      <aside aria-label="Oyun kaydı" className="grid min-w-0 gap-8">
+        {state.phase === "start" && !state.error ? (
+          <HowItLearns />
+        ) : (
+          <>
+            <AnswerLog history={state.history} />
+            {state.phase === "question" && !state.error && (
+              <Suspects
+                names={state.question?.candidates ?? []}
+                note="Şu ana kadarki cevaplara en çok uyanlar."
+              />
+            )}
+            {state.phase === "guess" && !state.error && (
+              <Suspects
+                names={state.guess?.alternatives ?? []}
+                note="Bu daldan çıkabilecek diğer tahminler."
+              />
+            )}
+          </>
+        )}
+      </aside>
+    </div>
+  );
 
-  switch (state.phase) {
-    case "start":
-      return <StartScreen headingRef={headingRef} onStart={start} />;
-    case "question":
+  function renderScreen() {
+    if (state.error) {
       return (
-        <QuestionScreen state={state} headingRef={headingRef} onAnswer={answer} onUndo={undo} />
-      );
-    case "guess":
-      return (
-        <GuessScreen
-          state={state}
+        <ErrorCard
+          error={state.error}
           headingRef={headingRef}
-          onFeedback={(correct) => void run({ type: "feedback", correct }, state)}
-          onUndo={undo}
+          onRetry={() => void run(state.error!.retry, state)}
+          onReset={() => dispatch({ type: "reset" })}
+          onUndo={state.error.retry.type === "next" && state.history.length > 0 ? undo : undefined}
         />
       );
-    case "wrong":
-      return (
-        <WrongScreen
-          state={state}
-          headingRef={headingRef}
-          onSubmit={(name) => void run({ type: "answer", answer: name }, state)}
-          onSkip={() => dispatch({ type: "skip" })}
-        />
-      );
-    case "done":
-      return <DoneScreen state={state} headingRef={headingRef} onRestart={start} />;
+    }
+
+    switch (state.phase) {
+      case "start":
+        return <StartScreen headingRef={headingRef} onStart={start} />;
+      case "question":
+        return (
+          <QuestionScreen state={state} headingRef={headingRef} onAnswer={answer} onUndo={undo} />
+        );
+      case "guess":
+        return (
+          <GuessScreen
+            state={state}
+            headingRef={headingRef}
+            onFeedback={(correct) => void run({ type: "feedback", correct }, state)}
+            onUndo={undo}
+          />
+        );
+      case "wrong":
+        return (
+          <WrongScreen
+            state={state}
+            headingRef={headingRef}
+            onSubmit={(name) => void run({ type: "answer", answer: name }, state)}
+            onSkip={() => dispatch({ type: "skip" })}
+          />
+        );
+      case "done":
+        return <DoneScreen state={state} headingRef={headingRef} onRestart={start} />;
+    }
   }
 }
