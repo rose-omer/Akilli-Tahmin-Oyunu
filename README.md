@@ -11,10 +11,10 @@ Aklından bir şey tut; oyun en çok 30 evet/hayır sorusunda bulmaya çalışı
 
 Görüntüler yerel bellekte tutulan soru ağacıyla alındı; veritabanı bağlı değil.
 
-| | |
-|---|---|
-| ![Başlangıç](docs/ekran/1-giris.png)<br>Başlangıç | ![Soru ekranı](docs/ekran/2-sorgu.png)<br>Soru ekranı |
-| ![Tahmin](docs/ekran/3-tahmin.png)<br>Tahmin | ![İstatistikler](docs/ekran/4-istatistikler.png)<br>İstatistikler |
+|                                                   |                                                                   |
+| ------------------------------------------------- | ----------------------------------------------------------------- |
+| ![Başlangıç](docs/ekran/1-giris.png)<br>Başlangıç | ![Soru ekranı](docs/ekran/2-sorgu.png)<br>Soru ekranı             |
+| ![Tahmin](docs/ekran/3-tahmin.png)<br>Tahmin      | ![İstatistikler](docs/ekran/4-istatistikler.png)<br>İstatistikler |
 
 ## Kullanım
 
