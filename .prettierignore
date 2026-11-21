@@ -1,0 +1,9 @@
+node_modules
+.next
+generated
+coverage
+playwright-report
+test-results
+package-lock.json
+data/question-tree.json
+prisma/migrations

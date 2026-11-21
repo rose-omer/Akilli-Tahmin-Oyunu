@@ -1,104 +1,160 @@
-# Akıl Okuyan Tahmin Oyunu
+# Akıllı Tahmin Oyunu
 
-Bu proje, EMAR Proje şirketindeki stajım sırasında, Staj Sorumlum Sayın **Mehmet Emre Doğan**'ın değerli yönlendirmeleri ve onaylarıyla geliştirildi. Kendisinin vizyonu ve geri bildirimleri, projenin temel yapısının ve işleyişinin şekillenmesinde belirleyici oldu. Bu oyun, kullanıcıların akıllarında tuttukları nesne, kişi veya kavramları "Evet/Hayır" sorularıyla tahmin etmeye çalışan yapay zeka destekli interaktif bir deneyim sunar.
+[![CI](https://github.com/rose-omer/Akilli-Tahmin-Oyunu/actions/workflows/ci.yml/badge.svg)](https://github.com/rose-omer/Akilli-Tahmin-Oyunu/actions/workflows/ci.yml)
+[![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-blue.svg)](LICENSE)
 
----
+Bu proje, EMAR Proje şirketindeki stajım sırasında, Staj Sorumlum Sayın **Mehmet Emre Doğan**'ın değerli yönlendirmeleri ve onaylarıyla geliştirildi. Kendisinin vizyonu ve geri bildirimleri, projenin temel yapısının ve işleyişinin şekillenmesinde belirleyici oldu.
 
-## Proje Hakkında
+Aklından bir şey tut; oyun en çok 30 evet/hayır sorusunda bulmaya çalışır. Her oyundan öğrenir: kaydedilen cevaplar bir sonraki oyunun soru seçimini ve tahminini değiştirir.
 
-Akıl Okuyan Tahmin Oyunu, kullanıcıların aklında tuttuğu bir şeyi bulmak için sınırlı sayıda "Evet" veya "Hayır" sorusu soran yapay zeka tabanlı bir tahmin oyunudur. Oyun, önceden tanımlanmış bir soru ağacı üzerinden ilerlerken, gerekli durumlarda veya soru limiti aşıldığında Gemini API'sini kullanarak son bir tahmin yapar. Kullanıcı geri bildirimleri, yapay zekanın tahmin yeteneğini gelecekte daha da geliştirmek ve oyun verilerini kalıcı olarak kaydetmek için **Neon Tech** tabanlı bir veritabanı sistemi kullanılarak saklanır.
+## Ekran görüntüleri
 
----
+Görüntüler yerel bellekte tutulan soru ağacıyla alındı; veritabanı bağlı değil.
 
-## Temel Özellikler
+|                                                   |                                                                   |
+| ------------------------------------------------- | ----------------------------------------------------------------- |
+| ![Başlangıç](docs/ekran/1-giris.png)<br>Başlangıç | ![Soru ekranı](docs/ekran/2-sorgu.png)<br>Soru ekranı             |
+| ![Tahmin](docs/ekran/3-tahmin.png)<br>Tahmin      | ![İstatistikler](docs/ekran/4-istatistikler.png)<br>İstatistikler |
 
-* **İnteraktif Soru-Cevap:** Kullanıcıya "Evet" veya "Hayır" şeklinde yanıtlayabileceği sorular sorar.
-* **Soru Ağacı Navigasyonu:** Önceden tanımlanmış bir soru ağacı (karar ağacı) kullanarak mantıksal bir akış sağlar.
-* **Gemini API Entegrasyonu:** Belirli durumlarda (örneğin, soru ağacının sonuna ulaşıldığında veya maksimum soru limitine yaklaşıldığında) Google Gemini API'sini kullanarak akıllı tahminler yapar.
-* **Kullanıcı Geri Bildirimi ve Veri Kaydı:** Tahmin doğru çıktığında veya yanlış çıktığında kullanıcılardan geri bildirim alır ve yanlış tahmin durumunda doğru cevabı **Neon Tech** destekli veritabanına kaydederek modelin gelişimine katkıda bulunur.
-* **Oyun Durumu Yönetimi:** Soru sayısı, oyun geçmişi ve tahmin durumu gibi bilgileri yönetir.
-* **Duyarlı ve Estetik Arayüz:** Modern ve kullanıcı dostu bir arayüz ile akıcı bir oyun deneyimi sunar.
+## Kullanım
 
----
+![Kullanım akışı](docs/ekran/kullanim.gif)
 
-## Kullanılan Teknolojiler
+Oyuncu aklında bir şey tutar ve soruları evet, hayır ya da bilmiyorum diye cevaplar. Oyun en çok 30 soruda tahmin eder.
 
-* **Next.js:** React tabanlı modern ve performanslı bir web uygulaması geliştirmek için kullanıldı.
-* **React:** Kullanıcı arayüzünü oluşturmak için tercih edildi.
-* **TypeScript:** Kod tabanının güvenilirliğini ve sürdürülebilirliğini artırmak için kullanıldı.
-* **Tailwind CSS:** Hızlı ve esnek UI geliştirme için faydalanıldı.
-* **Google Gemini API:** Yapay zeka destekli tahmin yetenekleri için ana motor olarak entegre edildi.
-* **Node.js:** API rotalarını ve sunucu tarafı işlemleri yönetmek için kullanıldı.
-* **Neon Tech:** Oyun verilerinin (oyun geçmişi, tahminler, kullanıcı geri bildirimleri) kalıcı olarak saklanması için bulut tabanlı, sunucusuz bir PostgreSQL veritabanı çözümü olarak entegre edildi.
-* **Vercel (Dağıtım):** Projenin kolayca dağıtılması için tercih edildi.
+## Özellikler
 
----
+- Evet / Hayır / Bilmiyorum cevapları; klavye kısayolları (E, H, B; G geri al).
+- Soru ağacı ile başlar, ağaç bitince öğrenen motor devam eder.
+- Öğrenen motor: Bayes güncellemesi + beklenen bilgi kazancı ile soru seçimi.
+- Motor zayıf kalırsa Gemini, motorun ilk beş adayına bakarak tahmin eder (isteğe bağlı).
+- Yanlış tahminde doğru cevap kaydedilir; motor o oyunun cevaplarını öğrenir.
+- `/istatistik`: başarı oranı (haftalık), tahmin kaynağı payı, en çok bilinen varlıklar.
+- Karanlık ve açık tema, mobil uyum, ekran okuyucu ve klavye desteği (WCAG AA).
 
-## Kurulum ve Çalıştırma
+## Nasıl öğreniyor?
 
-Projeyi yerel makinenizde kurmak ve çalıştırmak için aşağıdaki adımları izleyin:
+1. **Sayaçlar.** Her varlık ve soru için üç sayaç tutulur: `evet`, `hayır`, `bilmiyorum` (`EntityAnswerStat`). Soru ağacındaki yollar ilk bilgiyi verir (ağırlık 10).
+2. **Sonsal dağılım.** Her cevaptan sonra varlık olasılıkları Bayes kuralıyla güncellenir. Laplace düzeltmesi: `P(a | varlık, soru) = (sayaç[a] + 1) / (toplam + 3)`.
+3. **Soru seçimi.** Sıradaki soru, beklenen bilgi kazancı en yüksek olandır:
+   `IG(q) = H(p) − Σₐ P(a) · H(p | a)`, `P(a) = Σₑ p(e) · P(a | e, q)`.
+4. **Tahmin.** En olası varlık 0,6'yı geçince ya da soru kalmayınca tahmin edilir. En iyi aday 0,35'in altındaysa ve `GEMINI_API_KEY` tanımlıysa Gemini'ye cevaplar ve ilk beş aday gider.
+5. **Öğrenme.** Geri bildirimde doğru varlığın sayaçları artar. Ağaçta olmayan yeni bir varlık, en az `ENTITY_MIN_GAMES` (varsayılan 2) oyunda doğru cevap olarak geçmeden motoru etkilemez. Yeni varlık eklenince Gemini ayırt edici bir soru önerir; soru yönetici onayı (`Question.approved`) olmadan havuza girmez. Onay `/yonetim` sayfasında yapılır (`ADMIN_TOKEN` parolasıyla; değişken boşsa sayfa 404 döner).
 
-1.  **Depoyu Klonlayın:**
-    ```bash
-    git clone [https://github.com/KULLANICI_ADINIZ/AKIL_OKUYAN_TAHMIN_OYUNU.git](https://github.com/KULLANICI_ADINIZ/AKIL_OKUYAN_TAHMIN_OYUNU.git)
-    ```
-2.  **Proje Dizinine Gidin:**
-    ```bash
-    cd AKIL_OKUYAN_TAHMIN_OYUNU
-    ```
-3.  **Bağımlılıkları Yükleyin:**
-    ```bash
-    npm install
-    # veya
-    yarn install
-    ```
-4.  **Ortam Değişkenlerini Ayarlayın:**
-    Bir `.env.local` dosyası oluşturun ve gerekli API anahtarlarını ve veritabanı bağlantı bilgilerini buraya ekleyin:
-    ```
-    GEMINI_API_KEY=sizin_gemini_api_anahtarınız
-    DATABASE_URL=sizin_neon_veritabanı_bağlantı_urliniz
-    ```
-    * `sizin_gemini_api_anahtarınız` kısmını Google AI Studio'dan alacağınız Gemini API anahtarınızla değiştirin.
-    * `sizin_neon_veritabanı_bağlantı_urliniz` kısmını Neon Tech hesabınızdan alacağınız PostgreSQL bağlantı URL'nizle değiştirin.
-5.  **Veritabanı Şemasını Uygulayın (Gerekliyse):**
-    Eğer projenizde bir ORM  kullanıyorsanız, veritabanı şemasını uygulamak için ilgili komutu çalıştırın:
-    ```bash
-    npx prisma db push # Prisma kullanıyorsanız
-    ```
-6.  **Projeyi Başlatın:**
-    ```bash
-    npm run dev
-    # veya
-    yarn dev
-    ```
-    Uygulama genellikle `http://localhost:3000` adresinde çalışacaktır.
+Kayıtlı oyun sayısı `ENGINE_MIN_GAMES` değerini geçince oyunlar baştan motorla başlar.
 
----
+### Veri modeli
 
-## Proje Yapısı
+```
+Game ──< GameQuestion            (oyun ve sorulan sorular)
+Game >── Entity ──< EntityAnswerStat >── Question
+RateLimit (ipHash, windowStart, count)   (ham IP saklanmaz)
+```
 
-* `app/page.tsx`: Ana oyun mantığının ve durum yönetiminin bulunduğu Next.js sayfası.
-* `app/GameUI.tsx`: Oyunun kullanıcı arayüzünü ve görsel bileşenlerini içeren React bileşeni.
-* `app/data/questionTree.ts`: Oyunun temel soru ağacını (karar ağacını) tanımlayan veri yapısı.
-* `app/api/gemini/route.ts`: Gemini API ile iletişimi sağlayan API rotası.
-* `app/api/game/route.ts`: Oyun verilerini **Neon Tech** destekli veritabanına kaydetmek için kullanılan API rotası.
-* `public/images/asdasd.jpg`: Arka plan görseli.
-* `app/globals.css`: Tailwind CSS ve özel global stiller.
-* `prisma/schema.prisma` : Veritabanı şemasının tanımlandığı dosya 
+### Güvenlik
 
----
-## Ekran Resimleri 
-<img width="1900" height="857" alt="image" src="https://github.com/user-attachments/assets/8149ec6b-f56e-45cb-9ac3-ee20f24d9355" />
-<img width="1852" height="802" alt="image" src="https://github.com/user-attachments/assets/baf4ff89-7508-42d8-995b-6263ae08dc28" />
-<img width="1919" height="982" alt="image" src="https://github.com/user-attachments/assets/4582d505-462c-4d44-a971-cae50c822565" />
-<img width="1919" height="538" alt="image" src="https://github.com/user-attachments/assets/c21694a9-d7f8-4c19-9078-87a928efc5c9" />
+- İstemci yalnız `{ soruKimliği, cevap }` dizisini gönderir; serbest metin kabul edilmez. Gemini istemi sunucuda, ağaçtaki soru metinlerinden kurulur.
+- Sunucu her tahmini HMAC jetonuyla imzalar (mod, adımlar, ad, kaynak, zaman). Geri bildirim yalnız geçerli ve bir saatten yeni jetonla kabul edilir; istemci uydurma bir adı "doğru" diye kaydedemez.
+- Bütün girdiler `zod` ile doğrulanır. Server Action'lar da herkese açık POST uç noktasıdır.
+- Hız sınırı: IP özeti başına dakikada 30 istek (`RATE_LIMIT_PER_MINUTE`). IP, tuzlu SHA-256 özeti olarak `RateLimit` tablosunda kısa süre tutulur; eski pencereler ara sıra silinir.
+- IP kaynağı: Vercel'de platformun yazdığı `x-vercel-forwarded-for` / `x-real-ip`. Vercel dışında `X-Forwarded-For` zincirinin, güvenilir proxy'lerin eklediği kısmı (`TRUSTED_PROXY_HOPS`, varsayılan 1: son öğe). Uygulama proxy'siz doğrudan açılırsa bu başlığı istemci yazar; hız sınırı aşılabilir.
+- İstemciye yalnız sabit hata türü ve istek kimliği döner; ayrıntı sunucu logunda kalır.
 
-## Katkıda Bulunma
+## Teknoloji
 
-Bu projeye katkıda bulunmaktan çekinmeyin! Her türlü hata raporu, özellik önerisi veya kod katkısı memnuniyetle karşılanır. Lütfen bir "issue" açarak veya bir "pull request" göndererek katkıda bulunun.
+| Bileşen                         | Sürüm                           |
+| ------------------------------- | ------------------------------- |
+| Next.js (App Router, Turbopack) | 16.4.6                          |
+| React                           | 19.3.1                          |
+| TypeScript                      | 6.0.3                           |
+| Tailwind CSS                    | 4.3.5                           |
+| Prisma + Neon adapter           | 7.10.1                          |
+| @google/genai                   | 3.6.1 (`gemini-3.5-flash-lite`) |
+| zod                             | 4.6.7                           |
+| Vitest / Playwright             | 5.1.1 / 1.65.1                  |
 
----
+Node 22.12 ya da üstü gerekir; CI Node 24 kullanır.
+
+## Kurulum
+
+```bash
+git clone https://github.com/rose-omer/Akilli-Tahmin-Oyunu.git
+cd Akilli-Tahmin-Oyunu
+npm ci
+cp .env.example .env        # değerleri doldur
+npx prisma migrate deploy   # DATABASE_URL_UNPOOLED ile
+npm run dev
+```
+
+Veritabanı ve Gemini isteğe bağlıdır:
+
+- `DATABASE_URL` boşsa oyunlar süreç belleğinde tutulur (sunucu kapanınca silinir).
+- `GEMINI_API_KEY` boşsa tahminleri soru ağacı ve öğrenen motor yapar.
+
+### Ortam değişkenleri
+
+| Değişken                | Açıklama                                                                                               |
+| ----------------------- | ------------------------------------------------------------------------------------------------------ |
+| `DATABASE_URL`          | Neon pooler adresi (uygulama).                                                                         |
+| `DATABASE_URL_UNPOOLED` | Neon doğrudan adres (Prisma CLI, migration).                                                           |
+| `SHADOW_DATABASE_URL`   | Yalnız `npm run db:diff` için boş bir Postgres.                                                        |
+| `GEMINI_API_KEY`        | Google AI Studio anahtarı.                                                                             |
+| `GEMINI_MODEL`          | Varsayılan `gemini-3.5-flash-lite`.                                                                    |
+| `RATE_LIMIT_PER_MINUTE` | Varsayılan 30.                                                                                         |
+| `IP_HASH_SALT`          | IP özeti tuzu ve tahmin jetonu anahtarı. `DATABASE_URL` ya da Vercel varsa zorunlu, en az 16 karakter. |
+| `ENGINE_MIN_GAMES`      | Motorun baştan yönettiği eşik; varsayılan 25.                                                          |
+| `ENTITY_MIN_GAMES`      | Yeni varlığın motora girmesi için gereken oyun; varsayılan 2.                                          |
+| `TRUSTED_PROXY_HOPS`    | Vercel dışında `X-Forwarded-For`'a adres ekleyen proxy sayısı; varsayılan 1.                           |
+| `ADMIN_TOKEN`           | `/yonetim` soru onayı parolası, en az 16 karakter. Boşsa sayfa kapalı.                                 |
+| `TEST_DATABASE_URL`     | Yalnız entegrasyon testi: migration uygulanmış boş Postgres.                                           |
+
+## Komutlar
+
+| Komut                         | İş                                                                |
+| ----------------------------- | ----------------------------------------------------------------- |
+| `npm run dev`                 | Geliştirme sunucusu                                               |
+| `npm run build` / `npm start` | Üretim derlemesi ve sunucu                                        |
+| `npm run lint`                | ESLint 10 (flat config, `eslint-config-next`)                     |
+| `npm run typecheck`           | Rota tipleri + `tsc --noEmit`                                     |
+| `npm test`                    | Birim testleri; `TEST_DATABASE_URL` varsa Postgres entegrasyonu   |
+| `npm run test:e2e`            | Playwright + axe; önce `npm run build`                            |
+| `npm run db:migrate`          | `prisma migrate deploy`                                           |
+| `npm run db:diff`             | Migration ile şema sapması (`--exit-code`); `SHADOW_DATABASE_URL` |
+
+### Şema sapması ve entegrasyon testi
+
+- `npm run db:diff` migration'ları geçici bir veritabanında kurar; bu yüzden `SHADOW_DATABASE_URL` (boş bir Postgres) ister. Yoksa Prisma "You must set datasource.shadowDatabaseUrl" hatası verir.
+- `tests/integration/` Prisma deposunu gerçek Postgres'e karşı dener (`@prisma/adapter-pg`). `TEST_DATABASE_URL` yoksa atlanır. Yerelde:
+
+```bash
+export DATABASE_URL_UNPOOLED=postgresql://postgres:postgres@localhost:5432/tahmin
+npx prisma migrate deploy
+TEST_DATABASE_URL=$DATABASE_URL_UNPOOLED npm test
+```
+
+- CI ikisini de `postgres:17` servisiyle koşar.
+
+## Dağıtım (Vercel + Neon)
+
+1. Vercel'de Neon entegrasyonunu ekle; `DATABASE_URL` ve `DATABASE_URL_UNPOOLED` gelir.
+2. `GEMINI_API_KEY`, `GEMINI_MODEL`, `IP_HASH_SALT` (uzun rastgele değer) değişkenlerini ekle.
+3. Dağıtımdan önce `npx prisma migrate deploy` çalıştır.
+
+## Proje yapısı
+
+```
+app/                 sayfalar ve Server Action'lar (actions.ts)
+app/istatistik/      istatistik sayfası (Server Component)
+app/yonetim/         Gemini soru önerilerinin onay kuyruğu
+components/game/     oyun ekranları ve durum makinesi
+data/                soru ağacı (question-tree.json)
+lib/engine/          öğrenen motor: posterior.ts, infoGain.ts, knowledge.ts
+lib/game/            sunucu tarafı oyun servisi
+lib/store/           Prisma ve bellek depoları
+prisma/              şema ve migration'lar
+tests/, e2e/         Vitest ve Playwright testleri
+```
 
 ## Lisans
 
-Bu proje, MIT Lisansı altında yayımlanmıştır. Daha fazla bilgi için `LICENSE` dosyasına bakınız.
+MIT. Ayrıntı: [LICENSE](LICENSE).

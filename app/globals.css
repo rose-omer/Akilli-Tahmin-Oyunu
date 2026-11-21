@@ -1,53 +1,504 @@
-/* app/globals.css */
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/*
+  Sorgu odası tasarım dili.
+  Oda: koyu yeşil-gri duvar, üstte lamba ışığı (varsayılan karanlık; sistem açık isterse açık).
+  Dosya ve kâğıt: iki temada aynı; içindeki metin mürekkep rengindedir.
+  Vurgu: kırmızı mühür (kâğıt üstünde), sarı işaret (oda üstünde).
+*/
+:root {
+  color-scheme: dark;
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #4a5568;
-  border-radius: 10px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #a78bfa;
-  border-radius: 10px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #8b5cf6;
+  /* Oda */
+  --bg: #1f2a27;
+  --glow: rgb(255 214 140 / 0.16);
+  --surface: #2a3733;
+  --surface-line: #46564f;
+  --line: #3b4a44;
+  --line-strong: #66756f;
+  --fg: #d9ddd4;
+  --fg-strong: #f2ebd9;
+  --fg-muted: #a9b8b1;
+  /* Odada ayrı bir soluk ton yok; kâğıtta (.sheet) --ink-subtle olur. */
+  --fg-subtle: var(--fg-muted);
+  /* Devre dışı oda düğmesi: saydamlık yerine ayrı renk. */
+  --fg-disabled: #8d9a94;
+  --line-disabled: #4f5e58;
+  --link: #e9d9a6;
+  --link-hover: #fff1c4;
+  --mark: #f2c14e;
+  --ring: #f2c14e;
+  --danger: #f0a39a;
+  --folder-shadow: 0 2px 4px rgb(0 0 0 / 0.25), 0 24px 48px -28px rgb(0 0 0 / 0.7);
+
+  /* Dosya ve kâğıt (iki temada aynı) */
+  --folder: #c9b27c;
+  --folder-edge: #b9a26c;
+  --folder-ink: #2a2416;
+  --paper: #f2ebd9;
+  --paper-shade: #e2d6b8;
+  --ink: #1d1b16;
+  --ink-muted: #4a4434;
+  --ink-subtle: #6b6250;
+  --rule: #9c8f6e;
+  --stamp: #a3221b;
+  --stamp-strong: #84160f;
+  --stamp-fg: #fff6ec;
+  --ink-dash: #3f3a2d;
+  --stamp-wash: rgb(163 34 27 / 0.08);
+  --ink-wash: rgb(29 27 22 / 0.05);
+
+  /* Mühür yazı boyu: md 18 px taban; lg ekran eylemi (logo da); xl açılış ve cevap mühürleri. */
+  --stamp-text-md: 1.375rem;
+  --stamp-text-lg: 1.625rem;
+  --stamp-text-xl: 1.75rem;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --bg: #d5ddd7;
+    --glow: rgb(255 244 214 / 0.75);
+    --surface: #c7d1ca;
+    --surface-line: #a3b0a8;
+    --line: #aebab3;
+    --line-strong: #6b7872;
+    --fg: #22302b;
+    --fg-strong: #141d1a;
+    --fg-muted: #44524c;
+    --fg-disabled: #56625d;
+    --line-disabled: #95a29b;
+    --link: #5c4300;
+    --link-hover: #3b2b00;
+    --mark: #7a5300;
+    --ring: #7a5300;
+    --danger: #a3221b;
+    --folder-shadow: 0 2px 4px rgb(30 40 35 / 0.12), 0 24px 48px -28px rgb(30 40 35 / 0.45);
+  }
 }
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
+@theme inline {
+  --font-body: var(--font-courier), "Courier New", ui-monospace, monospace;
+  --font-display: var(--font-oswald), "Arial Narrow", sans-serif;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-line: var(--surface-line);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-fg-strong: var(--fg-strong);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-link: var(--link);
+  --color-mark: var(--mark);
+  --color-danger: var(--danger);
+  --color-stamp: var(--stamp);
+
+  /* Tip ölçeği: 16 px taban; başlıklar Courier kalın, etiketler Oswald. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.5rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.75rem;
+  --text-question: clamp(1.75rem, 1.2rem + 2.1vw, 2.75rem);
+  --text-question--line-height: 1.18;
+  --text-display: clamp(2.25rem, 1.5rem + 3vw, 3.5rem);
+  --text-display--line-height: 1.08;
+  --text-stamp-md: var(--stamp-text-md);
+  --text-stamp-lg: var(--stamp-text-lg);
+  --text-stamp-xl: var(--stamp-text-xl);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.1; }
-  50% { opacity: 0.15; }
-}
-.animate-pulse-slow {
-  animation: pulse-slow 4s infinite ease-in-out;
+@layer base {
+  html {
+    background: var(--bg);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    min-height: 100dvh;
+    background-color: var(--bg);
+    /* Masa lambası: odanın tek ışık kaynağı. */
+    background-image: radial-gradient(ellipse 60% 45% at 38% 22%, var(--glow), transparent 70%);
+    background-repeat: no-repeat;
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--mark);
+    color: var(--bg);
+  }
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 3px;
+  }
+  input {
+    caret-color: var(--stamp);
+  }
+  a {
+    color: var(--link);
+    text-underline-offset: 6px;
+    text-decoration-thickness: 1px;
+  }
+  a:hover {
+    color: var(--link-hover);
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  button:not(:disabled),
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
+  * {
+    scrollbar-color: var(--line-strong) transparent;
+  }
 }
 
-@keyframes glowing-border {
-  0% { box-shadow: 0 0 5px rgba(167, 139, 250, 0.7), 0 0 15px rgba(99, 102, 241, 0.5); }
-  50% { box-shadow: 0 0 15px rgba(167, 139, 250, 0.9), 0 0 40px rgba(99, 102, 241, 0.7); }
-  100% { box-shadow: 0 0 5px rgba(167, 139, 250, 0.7), 0 0 15px rgba(99, 102, 241, 0.5); }
+@layer components {
+  /* ───── Dosya: sekme + manila kap + kâğıt ───── */
+  .folder-tab {
+    display: inline-block;
+    margin: 0;
+    padding: 8px 18px 6px;
+    border-radius: 6px 6px 0 0;
+    background: var(--folder);
+    color: var(--folder-ink);
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .folder-body {
+    padding: clamp(10px, 1.4vw, 18px);
+    border-radius: 0 6px 6px 6px;
+    background: var(--folder);
+    box-shadow: var(--folder-shadow);
+  }
+  /* Kâğıdın içinde oda tokenleri mürekkep renklerine döner. */
+  .sheet {
+    --fg: var(--ink);
+    --fg-strong: var(--ink);
+    --fg-muted: var(--ink-muted);
+    --fg-subtle: var(--ink-subtle);
+    --line: #cbbd98;
+    --line-strong: var(--rule);
+    --link: var(--stamp);
+    --link-hover: var(--stamp-strong);
+    --mark: var(--stamp);
+    --ring: var(--ink);
+    --danger: var(--stamp);
+    position: relative;
+    padding: clamp(20px, 3vw, 40px);
+    background: var(--paper);
+    color: var(--fg);
+    box-shadow: 0 1px 0 var(--folder-edge);
+  }
+  .sheet ::selection {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .rule-dashed {
+    border: 0;
+    border-top: 1px dashed var(--rule);
+  }
+
+  /* ───── Mühür düğmeleri (kâğıt üstünde) ───── */
+  .stamp {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 22px;
+    border: 3px solid var(--stamp);
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    line-height: 1.1;
+    text-transform: uppercase;
+    text-decoration: none;
+    user-select: none;
+    rotate: var(--tilt, 0deg);
+    transition:
+      background-color 150ms ease-out,
+      border-color 150ms ease-out,
+      color 150ms ease-out;
+  }
+  .stamp-lg {
+    min-height: 56px;
+    padding: 0 32px;
+    font-size: var(--stamp-text-md);
+  }
+  .stamp-xl {
+    min-height: 64px;
+    padding: 0 36px;
+    font-size: var(--stamp-text-lg);
+  }
+  .stamp[aria-disabled],
+  .stamp:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+  .stamp-solid {
+    background: var(--stamp);
+    color: var(--stamp-fg);
+  }
+  .stamp-solid:not([aria-disabled]):hover {
+    border-color: var(--stamp-strong);
+    background: var(--stamp-strong);
+    color: var(--stamp-fg);
+  }
+  .stamp-outline {
+    background: transparent;
+    color: var(--stamp);
+  }
+  .stamp-outline:not([aria-disabled]):hover {
+    background: var(--stamp-wash);
+    color: var(--stamp);
+  }
+  .stamp-dashed {
+    border-style: dashed;
+    border-color: var(--ink-subtle);
+    background: transparent;
+    color: var(--ink-dash);
+    font-weight: 500;
+  }
+  .stamp-dashed:not([aria-disabled]):hover {
+    background: var(--ink-wash);
+  }
+
+  /* Metin düğmesi: kâğıtta ve odada aynı. */
+  .btn-ghost {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+    color: var(--fg-muted);
+    font-size: 1rem;
+    text-decoration: underline dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+    transition: color 150ms ease-out;
+  }
+  .btn-ghost:not([aria-disabled]):hover {
+    color: var(--fg);
+    text-decoration-style: solid;
+  }
+  .btn-ghost[aria-disabled] {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  /* Oda düğmesi: ince çerçeve, açık sarı yazı. */
+  .btn-quiet {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 10px;
+    padding: 0 16px;
+    border: 1px solid var(--line-strong);
+    color: var(--link);
+    font-size: 0.9375rem;
+    transition:
+      border-color 150ms ease-out,
+      color 150ms ease-out;
+  }
+  .btn-quiet:not([aria-disabled]):hover {
+    border-color: var(--link);
+    color: var(--link-hover);
+  }
+  .btn-quiet[aria-disabled] {
+    border-color: var(--line-disabled);
+    color: var(--fg-disabled);
+    cursor: not-allowed;
+  }
+
+  .kbd {
+    border: 1px solid currentColor;
+    padding: 1px 6px;
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.2;
+    text-transform: none;
+  }
+
+  /* Tutanaktaki cevap mührü. */
+  .verdict {
+    padding: 0 6px;
+    border: 1px solid currentColor;
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Kâğıt üstündeki yazı satırı. */
+  .field {
+    display: block;
+    width: 100%;
+    min-height: 52px;
+    padding: 0 12px;
+    border: 0;
+    border-bottom: 2px solid var(--ink);
+    background: rgb(255 255 255 / 0.4);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+  }
+  .field::placeholder {
+    color: var(--ink-subtle);
+  }
+  .field[aria-invalid="true"] {
+    border-bottom-color: var(--stamp);
+  }
+
+  /* Oranı gösteren mürekkep çizgisi. */
+  .ink-bar {
+    display: block;
+    width: 100%;
+    height: 8px;
+    background: var(--paper-shade);
+  }
+  .ink-bar > span {
+    display: block;
+    height: 100%;
+    background: var(--stamp);
+  }
+  .room-bar {
+    display: block;
+    width: 100%;
+    height: 6px;
+    background: var(--surface);
+  }
+  .room-bar > span {
+    display: block;
+    height: 100%;
+    background: var(--mark);
+  }
 }
-.animate-glowing-border {
-  animation: glowing-border 3s infinite alternate ease-in-out;
+
+/* Eminlik ölçeri (kâğıt üstünde). */
+.meter {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 8px;
+  border: 0;
+  background: var(--paper-shade);
+}
+.meter::-webkit-meter-bar {
+  height: 8px;
+  border: 0;
+  border-radius: 0;
+  background: var(--paper-shade);
+}
+.meter::-webkit-meter-optimum-value,
+.meter::-webkit-meter-suboptimum-value,
+.meter::-webkit-meter-even-less-good-value {
+  background: var(--stamp);
+}
+.meter::-moz-meter-bar {
+  background: var(--stamp);
+}
+
+/* İskelet satırı: yükleme sırasında soru yerini tutar. */
+.skeleton {
+  background: linear-gradient(90deg, var(--paper-shade), #d4c6a3, var(--paper-shade));
+  background-size: 200% 100%;
+}
+
+/* Kapanış mührü: sonuç ekranında bir kez basılır. */
+.closing-stamp {
+  display: inline-block;
+  padding: 6px 16px;
+  border: 3px solid var(--stamp);
+  color: var(--stamp);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  rotate: -6deg;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Mühür basılınca hafifçe çöker. */
+  .stamp {
+    transition:
+      background-color 150ms ease-out,
+      border-color 150ms ease-out,
+      color 150ms ease-out,
+      scale 120ms ease-out;
+  }
+  .stamp:active:not([aria-disabled]) {
+    scale: 0.97;
+  }
+  .skeleton {
+    animation: shimmer 1.4s linear infinite;
+  }
+  /* Yeni soru: kısa giriş. */
+  .enter {
+    animation: enter 220ms var(--ease-out-expo) both;
+  }
+  /* Tahmin anı: daktilo gibi soldan sağa açılır. */
+  .reveal {
+    animation: reveal 560ms steps(12, end) both;
+  }
+  .closing-stamp {
+    animation: stamp-down 360ms var(--ease-out-expo) 120ms both;
+  }
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes stamp-down {
+  from {
+    opacity: 0;
+    scale: 1.6;
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    scale: 1;
+  }
 }

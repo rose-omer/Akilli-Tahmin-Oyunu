@@ -1,0 +1,1128 @@
+{
+  "version": 1,
+  "root": "canli_mi",
+  "nodes": [
+    {
+      "id": "canli_mi",
+      "text": "Aklınızdaki şey canlı bir varlık mı?",
+      "yes": "hayvan_mi",
+      "no": "insan_yapimi_mi_ana"
+    },
+    {
+      "id": "hayvan_mi",
+      "text": "Bir hayvan mı?",
+      "yes": "kac_bacakli",
+      "no": "bitki_mi"
+    },
+    {
+      "id": "kac_bacakli",
+      "text": "Dört bacaklı mı?",
+      "yes": "tuylu_mu",
+      "no": "iki_bacakli_mi"
+    },
+    {
+      "id": "tuylu_mu",
+      "text": "Tüylü mü?",
+      "yes": "evcil_mi",
+      "no": "pullu_mu_kabuklu_mu"
+    },
+    {
+      "id": "evcil_mi",
+      "text": "Evcil bir hayvan mı?",
+      "yes": "evde_beslenir_mi",
+      "no": "vahsi_dort_bacakli_mi"
+    },
+    {
+      "id": "evde_beslenir_mi",
+      "text": "Genellikle evde mi beslenir?",
+      "yes": "kedi_mi",
+      "no": "ciftlik_hayvani_mi"
+    },
+    {
+      "id": "kedi_mi",
+      "text": "Düşündüğünüz hayvan, kedi ise 'miyav' sesi çıkarır mı?",
+      "yes": "tahmin_kedi",
+      "no": "kopek_mi"
+    },
+    {
+      "id": "kopek_mi",
+      "text": "Düşündüğünüz hayvan, köpek ise 'hav' sesi çıkarır mı?",
+      "yes": "tahmin_kopek",
+      "no": null
+    },
+    {
+      "id": "tahmin_kopek",
+      "guess": "Köpek"
+    },
+    {
+      "id": "tahmin_kedi",
+      "guess": "Kedi"
+    },
+    {
+      "id": "ciftlik_hayvani_mi",
+      "text": "Bir çiftlik hayvanı mı?",
+      "yes": "inek_mi",
+      "no": null
+    },
+    {
+      "id": "inek_mi",
+      "text": "Bu hayvan süt verir mi?",
+      "yes": "tahmin_inek",
+      "no": "koyun_mu"
+    },
+    {
+      "id": "tahmin_inek",
+      "guess": "İnek"
+    },
+    {
+      "id": "koyun_mu",
+      "text": "Bu hayvan yün verir mi?",
+      "yes": "tahmin_koyun",
+      "no": "tavuk_mu"
+    },
+    {
+      "id": "tahmin_koyun",
+      "guess": "Koyun"
+    },
+    {
+      "id": "tavuk_mu",
+      "text": "Bu hayvan yumurta verir mi?",
+      "yes": "tahmin_tavuk",
+      "no": "domuz_mu"
+    },
+    {
+      "id": "tahmin_tavuk",
+      "guess": "Tavuk"
+    },
+    {
+      "id": "domuz_mu",
+      "text": "Bu hayvan domuz mudur?",
+      "yes": "tahmin_domuz",
+      "no": null
+    },
+    {
+      "id": "tahmin_domuz",
+      "guess": "Domuz"
+    },
+    {
+      "id": "vahsi_dort_bacakli_mi",
+      "text": "Vahşi bir dört bacaklı mı?",
+      "yes": "ayi_mi",
+      "no": null
+    },
+    {
+      "id": "ayi_mi",
+      "text": "Büyük, tüylü ve kış uykusuna yatan bir hayvan mı?",
+      "yes": "tahmin_ayi",
+      "no": "tilki_mi"
+    },
+    {
+      "id": "tilki_mi",
+      "text": "Kurnazlığıyla bilinen, genellikle ormanlarda yaşayan vahşi bir hayvan mı?",
+      "yes": "tahmin_tilki",
+      "no": "aslan_mi"
+    },
+    {
+      "id": "tahmin_tilki",
+      "guess": "Tilki"
+    },
+    {
+      "id": "aslan_mi",
+      "text": "Lakabı 'Ormanın Kralı' mıdır?",
+      "yes": "tahmin_aslan",
+      "no": "kurt_mu"
+    },
+    {
+      "id": "tahmin_aslan",
+      "guess": "Aslan"
+    },
+    {
+      "id": "kurt_mu",
+      "text": "Aklınızdaki hayvan, Türk kültüründe sıkça anılan ve 'auww' sesi çıkaran bir hayvan mıdır?",
+      "yes": "tahmin_kurt",
+      "no": null
+    },
+    {
+      "id": "tahmin_kurt",
+      "guess": "Kurt"
+    },
+    {
+      "id": "tahmin_ayi",
+      "guess": "Ayı"
+    },
+    {
+      "id": "pullu_mu_kabuklu_mu",
+      "text": "Pullu veya kabuklu bir yapısı mı var?",
+      "yes": "balik_mi",
+      "no": "kurbaga_mi"
+    },
+    {
+      "id": "balik_mi",
+      "text": "Genellikle suda yaşayan, solungaçları olan bir hayvan mı?",
+      "yes": "kopekbaligi_mi",
+      "no": "yilan_mi"
+    },
+    {
+      "id": "kopekbaligi_mi",
+      "text": "Büyük, yırtıcı ve keskin dişleri olan bir deniz canlısı mı?",
+      "yes": "tahmin_kopekbaligi",
+      "no": null
+    },
+    {
+      "id": "tahmin_kopekbaligi",
+      "guess": "Köpekbalığı"
+    },
+    {
+      "id": "yilan_mi",
+      "text": "Ayakları olmayan ve sürünerek ilerleyen bir canlı mı?",
+      "yes": "tahmin_yilan",
+      "no": "kertenkele_mi"
+    },
+    {
+      "id": "kertenkele_mi",
+      "text": "Dört ayaklı ve derisi pullu bir sürüngen mi?",
+      "yes": "tahmin_kertenkele",
+      "no": null
+    },
+    {
+      "id": "tahmin_kertenkele",
+      "guess": "Kertenkele"
+    },
+    {
+      "id": "tahmin_yilan",
+      "guess": "Yılan"
+    },
+    {
+      "id": "kurbaga_mi",
+      "text": "Amfibik, derisi çıplak ve nemli mi?",
+      "yes": "tahmin_kurbaga",
+      "no": null
+    },
+    {
+      "id": "tahmin_kurbaga",
+      "guess": "Kurbağa"
+    },
+    {
+      "id": "iki_bacakli_mi",
+      "text": "İki bacaklı mı?",
+      "yes": "insan_mi",
+      "no": "surungen_mi"
+    },
+    {
+      "id": "insan_mi",
+      "text": "İnsan mı?",
+      "yes": "tahmin_insan",
+      "no": "ucabilir_mi"
+    },
+    {
+      "id": "ucabilir_mi",
+      "text": "Uçabilir mi?",
+      "yes": "ordek_mi",
+      "no": null
+    },
+    {
+      "id": "ordek_mi",
+      "text": "Göllerde ve su kenarlarında yaşayan, gagalı bir kuş mu?",
+      "yes": "tahmin__rdek",
+      "no": "guvercin_mi"
+    },
+    {
+      "id": "guvercin_mi",
+      "text": "Şehirlerde sık görülen, barışın sembolü olan bir kuş mu?",
+      "yes": "tahmin_guvercin",
+      "no": null
+    },
+    {
+      "id": "tahmin_guvercin",
+      "guess": "Güvercin"
+    },
+    {
+      "id": "tahmin__rdek",
+      "guess": "Ördek"
+    },
+    {
+      "id": "tahmin_insan",
+      "guess": "İnsan"
+    },
+    {
+      "id": "surungen_mi",
+      "text": "Sürüngen mi?",
+      "yes": "yilan_mi",
+      "no": "deniz_memelisi_mi"
+    },
+    {
+      "id": "deniz_memelisi_mi",
+      "text": "Denizde yaşayan bir memeli mi?",
+      "yes": "yunus_mi",
+      "no": "bocek_mi"
+    },
+    {
+      "id": "yunus_mi",
+      "text": "Denizde yaşayan, çok zeki olduğu bilinen bir memeli mi?",
+      "yes": "tahmin_yunus",
+      "no": null
+    },
+    {
+      "id": "tahmin_yunus",
+      "guess": "Yunus"
+    },
+    {
+      "id": "bocek_mi",
+      "text": "Küçük, altı veya daha fazla bacağı olan bir böcek mi?",
+      "yes": "karinca_mi",
+      "no": null
+    },
+    {
+      "id": "karinca_mi",
+      "text": "Toprakta yaşayan, koloniler halinde gezen küçük bir böcek mi?",
+      "yes": "tahmin_karinca",
+      "no": null
+    },
+    {
+      "id": "tahmin_karinca",
+      "guess": "Karınca"
+    },
+    {
+      "id": "bitki_mi",
+      "text": "Bitki mi?",
+      "yes": "cicek_mi",
+      "no": "mantar_mi"
+    },
+    {
+      "id": "cicek_mi",
+      "text": "Çiçek mi?",
+      "yes": "tahmin__icek",
+      "no": "agac_mi"
+    },
+    {
+      "id": "agac_mi",
+      "text": "Ağaç mı?",
+      "yes": "tahmin_agac",
+      "no": "kaktus_mi"
+    },
+    {
+      "id": "kaktus_mi",
+      "text": "Dikenli, kurak iklimlerde yaşayan bir bitki mi?",
+      "yes": "tahmin_kaktus",
+      "no": "bambu_mi"
+    },
+    {
+      "id": "bambu_mi",
+      "text": "Hızlı büyüyen, uzun ve içi boş gövdeli bir bitki mi?",
+      "yes": "tahmin_bambu",
+      "no": null
+    },
+    {
+      "id": "tahmin_bambu",
+      "guess": "Bambu"
+    },
+    {
+      "id": "tahmin_kaktus",
+      "guess": "Kaktüs"
+    },
+    {
+      "id": "tahmin_agac",
+      "guess": "Ağaç"
+    },
+    {
+      "id": "tahmin__icek",
+      "guess": "Çiçek"
+    },
+    {
+      "id": "mantar_mi",
+      "text": "Mantar mı?",
+      "yes": "tahmin_mantar",
+      "no": "mercan_mi"
+    },
+    {
+      "id": "mercan_mi",
+      "text": "Deniz altında koloni halinde yaşayan, kayalık benzeri bir canlı mı?",
+      "yes": "tahmin_mercan",
+      "no": null
+    },
+    {
+      "id": "tahmin_mercan",
+      "guess": "Mercan"
+    },
+    {
+      "id": "tahmin_mantar",
+      "guess": "Mantar"
+    },
+    {
+      "id": "insan_yapimi_mi_ana",
+      "text": "İnsan yapımı ve teknolojik bir şey mi?",
+      "yes": "teknolojik_mi",
+      "no": "giyilebilir_mi_ana"
+    },
+    {
+      "id": "teknolojik_mi",
+      "text": "Teknolojik bir cihaz mı?",
+      "yes": "iletisim_araci_mi",
+      "no": null
+    },
+    {
+      "id": "iletisim_araci_mi",
+      "text": "İletişim kurmak için kullanılır mı?",
+      "yes": "cep_telefonu_mu",
+      "no": "ev_aleti_mi"
+    },
+    {
+      "id": "cep_telefonu_mu",
+      "text": "Cep telefonu mu?",
+      "yes": "tahmin_cep_telefonu",
+      "no": "tablet_mi"
+    },
+    {
+      "id": "tablet_mi",
+      "text": "Tablet mi?",
+      "yes": "tahmin_tablet",
+      "no": "akilli_saat_mi"
+    },
+    {
+      "id": "akilli_saat_mi",
+      "text": "Akıllı saat veya giyilebilir teknoloji mi?",
+      "yes": "tahmin_akilli_saat",
+      "no": "bilgisayar_mi"
+    },
+    {
+      "id": "bilgisayar_mi",
+      "text": "Bilgisayar mı?",
+      "yes": "tasinabilir_mi_bilgisayar",
+      "no": null
+    },
+    {
+      "id": "tasinabilir_mi_bilgisayar",
+      "text": "Genellikle taşınabilir bir cihaz mı?",
+      "yes": "laptop_mu",
+      "no": "masaustu_bilgisayar_mi"
+    },
+    {
+      "id": "laptop_mu",
+      "text": "Bir laptop veya dizüstü bilgisayar mı?",
+      "yes": "tahmin_dizustu_bilgisayar",
+      "no": "masaustu_bilgisayar_mi"
+    },
+    {
+      "id": "masaustu_bilgisayar_mi",
+      "text": "Masaüstü bilgisayar mı?",
+      "yes": "tahmin_masaustu_bilgisayar",
+      "no": null
+    },
+    {
+      "id": "tahmin_masaustu_bilgisayar",
+      "guess": "Masaüstü bilgisayar"
+    },
+    {
+      "id": "tahmin_dizustu_bilgisayar",
+      "guess": "Dizüstü bilgisayar"
+    },
+    {
+      "id": "tahmin_akilli_saat",
+      "guess": "Akıllı saat"
+    },
+    {
+      "id": "tahmin_tablet",
+      "guess": "Tablet"
+    },
+    {
+      "id": "tahmin_cep_telefonu",
+      "guess": "Cep telefonu"
+    },
+    {
+      "id": "ev_aleti_mi",
+      "text": "Bir ev aleti mi?",
+      "yes": "buyuk_ev_aleti_mi",
+      "no": "mutfak_esya_mi"
+    },
+    {
+      "id": "buyuk_ev_aleti_mi",
+      "text": "Büyük bir ev aleti mi?",
+      "yes": "camasir_makinesi_mi",
+      "no": "kahve_makinesi_mi"
+    },
+    {
+      "id": "camasir_makinesi_mi",
+      "text": "Giysileri yıkamak için kullanılan bir ev aleti mi?",
+      "yes": "tahmin__amasir_makinesi",
+      "no": "buzdolabi_mi"
+    },
+    {
+      "id": "buzdolabi_mi",
+      "text": "Yiyecek ve içecekleri soğuk tutan bir ev aleti mi?",
+      "yes": "tahmin_buzdolabi",
+      "no": null
+    },
+    {
+      "id": "tahmin_buzdolabi",
+      "guess": "Buzdolabı"
+    },
+    {
+      "id": "tahmin__amasir_makinesi",
+      "guess": "Çamaşır makinesi"
+    },
+    {
+      "id": "kahve_makinesi_mi",
+      "text": "Kahve yapmak için kullanılan küçük bir ev aleti mi?",
+      "yes": "tahmin_kahve_makinesi",
+      "no": "televizyon_mu"
+    },
+    {
+      "id": "televizyon_mu",
+      "text": "Görüntü izlemek için kullanılan bir elektronik ev aleti mi?",
+      "yes": "tahmin_televizyon",
+      "no": null
+    },
+    {
+      "id": "tahmin_televizyon",
+      "guess": "Televizyon"
+    },
+    {
+      "id": "tahmin_kahve_makinesi",
+      "guess": "Kahve makinesi"
+    },
+    {
+      "id": "mutfak_esya_mi",
+      "text": "Mutfakta kullanılan bir eşya mı?",
+      "yes": null,
+      "no": "kitap_mi"
+    },
+    {
+      "id": "kitap_mi",
+      "text": "Okumak için kullanılan, sayfalardan oluşan bir nesne mi?",
+      "yes": "tahmin_kitap",
+      "no": "kalem_mi"
+    },
+    {
+      "id": "kalem_mi",
+      "text": "Yazmak veya çizmek için kullanılan ince bir araç mı?",
+      "yes": "tahmin_kalem",
+      "no": null
+    },
+    {
+      "id": "tahmin_kalem",
+      "guess": "Kalem"
+    },
+    {
+      "id": "tahmin_kitap",
+      "guess": "Kitap"
+    },
+    {
+      "id": "giyilebilir_mi_ana",
+      "text": "Giyilebilir bir şey mi?",
+      "yes": "kiyafet_mi",
+      "no": "mobilya_mi_ana"
+    },
+    {
+      "id": "kiyafet_mi",
+      "text": "Bir kıyafet mi?",
+      "yes": null,
+      "no": "gunes_gozlugu_mi"
+    },
+    {
+      "id": "gunes_gozlugu_mi",
+      "text": "Güneşten korunmak için takılan bir aksesuar mı?",
+      "yes": "tahmin_gunes_gozlugu",
+      "no": null
+    },
+    {
+      "id": "tahmin_gunes_gozlugu",
+      "guess": "Güneş gözlüğü"
+    },
+    {
+      "id": "mobilya_mi_ana",
+      "text": "Mobilya mı?",
+      "yes": "masa_mi",
+      "no": "tasit_mi_ana"
+    },
+    {
+      "id": "masa_mi",
+      "text": "Üzerine eşya koymak veya yemek yemek için mi kullanılır?",
+      "yes": "tahmin_masa",
+      "no": "sandalye_mi"
+    },
+    {
+      "id": "sandalye_mi",
+      "text": "Oturmak için mi kullanılır?",
+      "yes": "tahmin_sandalye",
+      "no": "dolap_mi"
+    },
+    {
+      "id": "dolap_mi",
+      "text": "Eşya depolamak için kullanılan bir mobilya mı?",
+      "yes": "tahmin_dolap",
+      "no": "yatak_mi"
+    },
+    {
+      "id": "yatak_mi",
+      "text": "Üzerinde uyunan bir mobilya mı?",
+      "yes": "tahmin_yatak",
+      "no": null
+    },
+    {
+      "id": "tahmin_yatak",
+      "guess": "Yatak"
+    },
+    {
+      "id": "tahmin_dolap",
+      "guess": "Dolap"
+    },
+    {
+      "id": "tahmin_sandalye",
+      "guess": "Sandalye"
+    },
+    {
+      "id": "tahmin_masa",
+      "guess": "Masa"
+    },
+    {
+      "id": "tasit_mi_ana",
+      "text": "Bir taşıt mı?",
+      "yes": "araba_mi",
+      "no": "yenilebilir_mi_ana"
+    },
+    {
+      "id": "araba_mi",
+      "text": "Karada giden, motorlu ve tekerlekli bir taşıt mı?",
+      "yes": "tahmin_araba",
+      "no": "tren_mi"
+    },
+    {
+      "id": "tren_mi",
+      "text": "Raylar üzerinde giden uzun bir taşıt mı?",
+      "yes": "tahmin_tren",
+      "no": "ucak_mi"
+    },
+    {
+      "id": "ucak_mi",
+      "text": "Havada seyahat eden bir taşıt mı?",
+      "yes": "tahmin_ucak",
+      "no": "gemi_mi"
+    },
+    {
+      "id": "gemi_mi",
+      "text": "Denizde seyahat eden büyük bir taşıt mı?",
+      "yes": "tahmin_gemi",
+      "no": null
+    },
+    {
+      "id": "tahmin_gemi",
+      "guess": "Gemi"
+    },
+    {
+      "id": "tahmin_ucak",
+      "guess": "Uçak"
+    },
+    {
+      "id": "tahmin_tren",
+      "guess": "Tren"
+    },
+    {
+      "id": "tahmin_araba",
+      "guess": "Araba"
+    },
+    {
+      "id": "yenilebilir_mi_ana",
+      "text": "Yenilebilir bir şey mi?",
+      "yes": "yenilebilir_mi",
+      "no": "yer_ismi_mi_ana"
+    },
+    {
+      "id": "yenilebilir_mi",
+      "text": "Yenilebilir bir şey mi?",
+      "yes": "meyve_mi",
+      "no": null
+    },
+    {
+      "id": "meyve_mi",
+      "text": "Genellikle çiğ olarak tüketilen tatlı veya ekşi bir bitki ürünü mü?",
+      "yes": "domates_mi",
+      "no": "kuruyemis_mi"
+    },
+    {
+      "id": "domates_mi",
+      "text": "Domates midir?",
+      "yes": "tahmin_domates",
+      "no": "elma_mi"
+    },
+    {
+      "id": "tahmin_domates",
+      "guess": "Domates"
+    },
+    {
+      "id": "elma_mi",
+      "text": "Elma mıdır?",
+      "yes": "tahmin_elma",
+      "no": "portakal_mi"
+    },
+    {
+      "id": "tahmin_elma",
+      "guess": "Elma"
+    },
+    {
+      "id": "portakal_mi",
+      "text": "Portakal mıdır?",
+      "yes": "tahmin_portakal",
+      "no": null
+    },
+    {
+      "id": "tahmin_portakal",
+      "guess": "Portakal"
+    },
+    {
+      "id": "kuruyemis_mi",
+      "text": "Kabuklu ve genellikle kurutulmuş yenilebilir bir bitki ürünü mü?",
+      "yes": "findik_mi",
+      "no": "ot_mi"
+    },
+    {
+      "id": "findik_mi",
+      "text": "Fındık mıdır?",
+      "yes": "tahmin_findik",
+      "no": "ceviz_mi"
+    },
+    {
+      "id": "tahmin_findik",
+      "guess": "Fındık"
+    },
+    {
+      "id": "ceviz_mi",
+      "text": "Ceviz midir?",
+      "yes": "tahmin_ceviz",
+      "no": null
+    },
+    {
+      "id": "tahmin_ceviz",
+      "guess": "Ceviz"
+    },
+    {
+      "id": "ot_mi",
+      "text": "Genellikle yemeklere aroma vermek için kullanılan bir ot veya baharat mıdır?",
+      "yes": "nane_mi",
+      "no": "yenilebilir_mantar_mi"
+    },
+    {
+      "id": "nane_mi",
+      "text": "Nane midir?",
+      "yes": "tahmin_nane",
+      "no": "kekik_mi"
+    },
+    {
+      "id": "tahmin_nane",
+      "guess": "Nane"
+    },
+    {
+      "id": "kekik_mi",
+      "text": "Kekik midir?",
+      "yes": "tahmin_kekik",
+      "no": null
+    },
+    {
+      "id": "tahmin_kekik",
+      "guess": "Kekik"
+    },
+    {
+      "id": "yenilebilir_mantar_mi",
+      "text": "Yenilebilir bir mantar mıdır?",
+      "yes": "tahmin_mantar",
+      "no": null
+    },
+    {
+      "id": "yer_ismi_mi_ana",
+      "text": "Bir yer adı veya coğrafi bir konum mu?",
+      "yes": "yer_ismi_mi",
+      "no": "dogal_cansiz_mi_ana"
+    },
+    {
+      "id": "yer_ismi_mi",
+      "text": "Bir yer adı veya coğrafi bir konum mu?",
+      "yes": "sehir_mi",
+      "no": null
+    },
+    {
+      "id": "sehir_mi",
+      "text": "Büyük ve kalabalık bir yerleşim yeri mi?",
+      "yes": "istanbul_mu",
+      "no": "ulke_mi"
+    },
+    {
+      "id": "istanbul_mu",
+      "text": "İki kıtayı birbirine bağlayan büyük bir şehir mi?",
+      "yes": "tahmin_istanbul",
+      "no": "paris_mi"
+    },
+    {
+      "id": "paris_mi",
+      "text": "Eyfel Kulesi ile ünlü, Fransa'nın başkenti mi?",
+      "yes": "tahmin_paris",
+      "no": null
+    },
+    {
+      "id": "tahmin_paris",
+      "guess": "Paris"
+    },
+    {
+      "id": "tahmin_istanbul",
+      "guess": "İstanbul"
+    },
+    {
+      "id": "ulke_mi",
+      "text": "Siyasi bir sınırla belirlenmiş bir toprak parçası mı?",
+      "yes": "turkiye_mi",
+      "no": "kita_mi"
+    },
+    {
+      "id": "turkiye_mi",
+      "text": "Hem Asya hem Avrupa kıtalarında toprakları olan bir ülke mi?",
+      "yes": "tahmin_turkiye",
+      "no": null
+    },
+    {
+      "id": "tahmin_turkiye",
+      "guess": "Türkiye"
+    },
+    {
+      "id": "kita_mi",
+      "text": "Geniş bir kara parçası mı?",
+      "yes": "asya_mi",
+      "no": "okyanus_mi"
+    },
+    {
+      "id": "asya_mi",
+      "text": "Dünyanın en büyük kıtası mı?",
+      "yes": "tahmin_asya",
+      "no": null
+    },
+    {
+      "id": "tahmin_asya",
+      "guess": "Asya"
+    },
+    {
+      "id": "okyanus_mi",
+      "text": "Çok geniş ve derin bir su kütlesi mi?",
+      "yes": "pasifik_okyanusu_mu",
+      "no": "dag_mi"
+    },
+    {
+      "id": "pasifik_okyanusu_mu",
+      "text": "Dünyanın en büyük okyanusu mu?",
+      "yes": "tahmin_pasifik_okyanusu",
+      "no": null
+    },
+    {
+      "id": "tahmin_pasifik_okyanusu",
+      "guess": "Pasifik Okyanusu"
+    },
+    {
+      "id": "dag_mi",
+      "text": "Yüksek ve doğal bir yeryüzü şekli mi?",
+      "yes": "everest_mi",
+      "no": "nehir_mi"
+    },
+    {
+      "id": "everest_mi",
+      "text": "Dünyanın en yüksek dağı mı?",
+      "yes": "tahmin_everest",
+      "no": null
+    },
+    {
+      "id": "tahmin_everest",
+      "guess": "Everest"
+    },
+    {
+      "id": "nehir_mi",
+      "text": "Doğal bir akarsu yatağı mı?",
+      "yes": "nil_nehri_mi",
+      "no": null
+    },
+    {
+      "id": "nil_nehri_mi",
+      "text": "Dünyanın en uzun nehirlerinden biri mi?",
+      "yes": "tahmin_nil_nehri",
+      "no": null
+    },
+    {
+      "id": "tahmin_nil_nehri",
+      "guess": "Nil Nehri"
+    },
+    {
+      "id": "dogal_cansiz_mi_ana",
+      "text": "Doğada kendiliğinden mi oluşur?",
+      "yes": "dogal_cansiz_mi",
+      "no": "soyut_kavram_mi"
+    },
+    {
+      "id": "dogal_cansiz_mi",
+      "text": "Doğada kendiliğinden mi oluşur?",
+      "yes": "katimi_sivi_mi",
+      "no": "volkan_mi"
+    },
+    {
+      "id": "katimi_sivi_mi",
+      "text": "Genellikle katı halde mi bulunur?",
+      "yes": "katilarin_ozellikleri",
+      "no": null
+    },
+    {
+      "id": "katilarin_ozellikleri",
+      "text": "Bu şey sert ve dayanıklı mı?",
+      "yes": "kaya_mi",
+      "no": "toprak_mi"
+    },
+    {
+      "id": "kaya_mi",
+      "text": "Bir kaya veya taş mı?",
+      "yes": "tahmin_kaya",
+      "no": "metal_mi"
+    },
+    {
+      "id": "metal_mi",
+      "text": "Bir maden veya metal mi (örneğin altın, demir)?",
+      "yes": "tahmin_metal",
+      "no": null
+    },
+    {
+      "id": "tahmin_metal",
+      "guess": "Metal"
+    },
+    {
+      "id": "tahmin_kaya",
+      "guess": "Kaya"
+    },
+    {
+      "id": "toprak_mi",
+      "text": "Toprak mı?",
+      "yes": "tahmin_toprak",
+      "no": "kristal_mi"
+    },
+    {
+      "id": "kristal_mi",
+      "text": "Kristal, değerli taş gibi bir şey mi?",
+      "yes": "tahmin_kristal",
+      "no": null
+    },
+    {
+      "id": "tahmin_kristal",
+      "guess": "Kristal"
+    },
+    {
+      "id": "tahmin_toprak",
+      "guess": "Toprak"
+    },
+    {
+      "id": "volkan_mi",
+      "text": "İçinden lav çıkan doğal bir dağ oluşumu mu?",
+      "yes": "tahmin_volkan",
+      "no": "selale_mi"
+    },
+    {
+      "id": "selale_mi",
+      "text": "Suyun yüksek bir yerden aşağı aktığı doğal oluşum mu?",
+      "yes": "tahmin__elale",
+      "no": "gokkusagi_mi"
+    },
+    {
+      "id": "gokkusagi_mi",
+      "text": "Yağmur sonrası gökyüzünde beliren renkli bir kemer mi?",
+      "yes": "tahmin_gokkusagi",
+      "no": null
+    },
+    {
+      "id": "tahmin_gokkusagi",
+      "guess": "Gökkuşağı"
+    },
+    {
+      "id": "tahmin__elale",
+      "guess": "Şelale"
+    },
+    {
+      "id": "tahmin_volkan",
+      "guess": "Volkan"
+    },
+    {
+      "id": "soyut_kavram_mi",
+      "text": "Bir duygu, kavram veya soyut bir düşünce mi?",
+      "yes": "duygu_mu",
+      "no": "toplumsal_kavram_mi"
+    },
+    {
+      "id": "duygu_mu",
+      "text": "Bu bir duygu mu?",
+      "yes": "olumlu_mu",
+      "no": null
+    },
+    {
+      "id": "olumlu_mu",
+      "text": "Genellikle olumlu bir duygu mu?",
+      "yes": "mutluluk_benzeri_mi",
+      "no": "korku_benzeri_mi"
+    },
+    {
+      "id": "mutluluk_benzeri_mi",
+      "text": "Mutluluk, sevinç, huzur gibi bir şey mi?",
+      "yes": "tahmin_mutluluk",
+      "no": "aska_benzer_mi"
+    },
+    {
+      "id": "aska_benzer_mi",
+      "text": "Aşka benzer bir duygu mu?",
+      "yes": "tahmin_ask",
+      "no": "umut_mu"
+    },
+    {
+      "id": "umut_mu",
+      "text": "Geleceğe dair iyi beklentileri içeren bir duygu mu?",
+      "yes": "tahmin_umut",
+      "no": "merak_mi"
+    },
+    {
+      "id": "merak_mi",
+      "text": "Bilme veya öğrenme isteği uyandıran bir duygu mu?",
+      "yes": "tahmin_merak",
+      "no": null
+    },
+    {
+      "id": "tahmin_merak",
+      "guess": "Merak"
+    },
+    {
+      "id": "tahmin_umut",
+      "guess": "Umut"
+    },
+    {
+      "id": "tahmin_ask",
+      "guess": "Aşk"
+    },
+    {
+      "id": "tahmin_mutluluk",
+      "guess": "Mutluluk"
+    },
+    {
+      "id": "korku_benzeri_mi",
+      "text": "Korku, öfke veya üzüntü gibi olumsuz bir duygu mu?",
+      "yes": "korku_mu",
+      "no": "sabir_mi"
+    },
+    {
+      "id": "korku_mu",
+      "text": "Korku mu?",
+      "yes": "tahmin_korku",
+      "no": "uzuntu_mu"
+    },
+    {
+      "id": "uzuntu_mu",
+      "text": "Üzüntü mü?",
+      "yes": "tahmin__zuntu",
+      "no": null
+    },
+    {
+      "id": "tahmin__zuntu",
+      "guess": "Üzüntü"
+    },
+    {
+      "id": "tahmin_korku",
+      "guess": "Korku"
+    },
+    {
+      "id": "sabir_mi",
+      "text": "Beklemeyi veya zorluklara dayanmayı gerektiren bir erdem mi?",
+      "yes": "tahmin_sabir",
+      "no": null
+    },
+    {
+      "id": "tahmin_sabir",
+      "guess": "Sabır"
+    },
+    {
+      "id": "toplumsal_kavram_mi",
+      "text": "Toplumsal bir değer veya fikir mi?",
+      "yes": "sorumluluk_mu",
+      "no": "kurgusal_karakter_mi"
+    },
+    {
+      "id": "sorumluluk_mu",
+      "text": "Bir görevi yerine getirme veya bir eylemin sonuçlarını üstlenme durumu mu?",
+      "yes": "tahmin_sorumluluk",
+      "no": "adalet_mi_kavram"
+    },
+    {
+      "id": "adalet_mi_kavram",
+      "text": "Hak ve eşitlikle ilgili bir kavram mı?",
+      "yes": "tahmin_adalet",
+      "no": "ozgurluk_mu_kavram"
+    },
+    {
+      "id": "ozgurluk_mu_kavram",
+      "text": "Bağımsızlık ve kısıtlamasız olma durumuyla ilgili bir kavram mı?",
+      "yes": "tahmin__zgurluk",
+      "no": null
+    },
+    {
+      "id": "tahmin__zgurluk",
+      "guess": "Özgürlük"
+    },
+    {
+      "id": "tahmin_adalet",
+      "guess": "Adalet"
+    },
+    {
+      "id": "tahmin_sorumluluk",
+      "guess": "Sorumluluk"
+    },
+    {
+      "id": "kurgusal_karakter_mi",
+      "text": "Kitaplardan, filmlerden veya çizgi filmlerden bilinen kurgusal bir karakter mi?",
+      "yes": "harry_potter_mi",
+      "no": null
+    },
+    {
+      "id": "harry_potter_mi",
+      "text": "Büyücü, gözlüklü, sihir dünyasında yaşayan ünlü bir karakter mi?",
+      "yes": "tahmin_harry_potter",
+      "no": "darth_vader_mi"
+    },
+    {
+      "id": "darth_vader_mi",
+      "text": "Karanlık tarafta olan, siyah giyinen, maskeli bir karakter mi?",
+      "yes": "tahmin_darth_vader",
+      "no": "sherlock_holmes_mi"
+    },
+    {
+      "id": "sherlock_holmes_mi",
+      "text": "Ünlü bir dedektif, zekasıyla olayları çözen bir karakter mi?",
+      "yes": "tahmin_sherlock_holmes",
+      "no": "sunger_bob_mi"
+    },
+    {
+      "id": "sunger_bob_mi",
+      "text": "Denizde yaşayan, sarı renkli, neşeli bir çizgi film karakteri mi?",
+      "yes": "tahmin_sunger_bob",
+      "no": "batman_mi"
+    },
+    {
+      "id": "batman_mi",
+      "text": "Gotham şehrinde yaşayan, maskeli ve zengin bir kahraman mı?",
+      "yes": "tahmin_batman",
+      "no": null
+    },
+    {
+      "id": "tahmin_batman",
+      "guess": "Batman"
+    },
+    {
+      "id": "tahmin_sunger_bob",
+      "guess": "Sünger Bob"
+    },
+    {
+      "id": "tahmin_sherlock_holmes",
+      "guess": "Sherlock Holmes"
+    },
+    {
+      "id": "tahmin_darth_vader",
+      "guess": "Darth Vader"
+    },
+    {
+      "id": "tahmin_harry_potter",
+      "guess": "Harry Potter"
+    }
+  ]
+}
